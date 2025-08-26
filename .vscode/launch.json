@@ -4,34 +4,15 @@
 	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
 	"version": "0.2.0",
 	"configurations": [
-
 		{
 			"type": "node",
 			"request": "launch",
 			"name": "Debug Program",
-			"skipFiles": [
-				"<node_internals>/**"
-			],
+			"skipFiles": ["<node_internals>/**"],
 			"outputCapture": "std",
 			"program": "${workspaceFolder}/out/index.js",
 			"sourceMaps": true,
-			"outFiles": [
-				"${workspaceFolder}/out/**/*.js"
-			]
-		},
-		{
-			"type": "node",
-			"request": "launch",
-			"name": "Build Post",
-			"skipFiles": [
-				"<node_internals>/**"
-			],
-			"outputCapture": "std",
-			"program": "${workspaceFolder}/scripts/build-post.js",
-			"sourceMaps": true,
-			"outFiles": [
-				"${workspaceFolder}/out/**/*.js"
-			]
+			"outFiles": ["${workspaceFolder}/out/**/*.js"]
 		}
 	]
 }

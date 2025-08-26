@@ -5,9 +5,7 @@
 			"label": "Build Typescript",
 			"type": "shell",
 			"command": "./node_modules/.bin/tsc -p tsconfig.json",
-			"problemMatcher": [
-				"$tsc"
-			],
+			"problemMatcher": ["$tsc"],
 			"group": {
 				"kind": "build",
 				"isDefault": true
