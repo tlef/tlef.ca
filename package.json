@@ -13,6 +13,7 @@
   "dependencies": {
     "@koa/cors": "^5.0.0",
     "dotenv": "^17.2.1",
+    "eta": "^3.5.0",
     "koa": "^3.0.1",
     "koa-bearer-token": "^2.0.2",
     "koa-body": "^6.0.1",
