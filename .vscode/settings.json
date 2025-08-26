@@ -1,0 +1,10 @@
+{
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "dbaeumer.vscode-eslint",
+	"editor.codeActionsOnSave": {
+		"source.fixAll": "explicit"
+	},
+  "eslint.lintTask.options": "--ext .ts",
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+}

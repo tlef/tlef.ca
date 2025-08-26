@@ -1,0 +1,30 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build Typescript",
+			"type": "shell",
+			"command": "./node_modules/.bin/tsc -p tsconfig.json",
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "Lint Typescript",
+			"type": "shell",
+			"command": "./node_modules/.bin/eslint 'src/**/*.{ts,tsx}'",
+			"presentation": {
+				"reveal": "always"
+			},
+			"group": {
+				"kind": "none",
+				"isDefault": false
+			},
+			"problemMatcher": "$eslint-stylish"
+		}
+	]
+}
