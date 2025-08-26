@@ -1,15 +1,13 @@
-import Koa from "koa";
-import Router from "koa-router";
-import BodyParser from "koa-body";
-import serve from "koa-static";
-import cors from "@koa/cors";
-import { bearerToken } from "koa-bearer-token";
-
+import Koa from 'koa';
+import Router from 'koa-router';
+import BodyParser from 'koa-body';
+import serve from 'koa-static';
+import cors from '@koa/cors';
+import { bearerToken } from 'koa-bearer-token';
 
 export class App {
 	protected app: Koa;
 	protected router: Router;
-
 
 	constructor() {
 		this.app = new Koa();
@@ -20,12 +18,13 @@ export class App {
 				urlencoded: true,
 			}),
 		);
+
 		this.app.use(cors());
 		this.app.use(bearerToken());
-		this.app.use(serve("./public"));
+		this.app.use(serve('./public'));
 
-		this.router.get("/", async (ctx) => {
-			ctx.body = "test";
+		this.router.get('/', async (ctx) => {
+			ctx.body = 'test';
 		});
 
 		this.app.use(this.router.routes());
