@@ -1,0 +1,12 @@
+<section class="posts-index">
+  <h1>Blog Posts</h1>
+  <ul>
+    <% it.posts.forEach(function(post) { %>
+      <li>
+        <a href="/posts/<%= post.slug %>.html"><%= post.title || post.slug %></a>
+        <% if (post.date) { %> <span class="date">(<%= post.date %>)</span><% } %>
+        <% if (post.summary) { %> - <%= post.summary %><% } %>
+      </li>
+    <% }) %>
+  </ul>
+</section>

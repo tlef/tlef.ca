@@ -1,0 +1,7 @@
+<article class="post">
+  <h1><%= it.title %></h1>
+  <% if (it.date) { %><p class="date"><%= it.date %></p><% } %>
+  <div class="content">
+    <%- it.content %>
+  </div>
+</article>
