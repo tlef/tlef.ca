@@ -21,13 +21,13 @@ export class PostPage {
 	}
 
 	private async getPosts(ctx: Context): Promise<void> {
-		const { search, offset, count, tags } = ctx.query;
+		const { search, offset, count, tag } = ctx.query;
 
 		const posts = this.postsController.getPosts({
 			search: typeof search === 'string' ? search : undefined,
 			offset: typeof offset === 'string' ? parseInt(offset) : DEFAULT_OFFSET,
 			limit: typeof count === 'string' ? parseInt(count) : POSTS_PER_PAGE,
-			tags: typeof tags === 'string' ? tags.split(',') : undefined,
+			tags: typeof tag === 'string' ? tag.split(',') : undefined,
 		});
 
 		ctx.body = this.renderer.render('posts', { posts });

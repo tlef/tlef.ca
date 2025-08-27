@@ -26,16 +26,16 @@ export class PostsApi {
 	async getPosts(
 		args: Record<string, unknown>,
 	): Promise<{ body: string; status: number }> {
-		const { search, offset, count, tags } = args;
+		const { search, offset, count, tag } = args;
 
 		const posts = this.postsController.getPosts({
 			search: typeof search === 'string' ? search : undefined,
 			offset: typeof offset === 'string' ? parseInt(offset) : undefined,
 			limit: typeof count === 'string' ? parseInt(count) : undefined,
-			tags: Array.isArray(tags)
-				? tags
-				: typeof tags === 'string'
-					? tags.split(',')
+			tags: Array.isArray(tag)
+				? tag
+				: typeof tag === 'string'
+					? tag.split(',')
 					: undefined,
 		});
 		return { body: JSON.stringify(posts), status: 200 };
