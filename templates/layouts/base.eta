@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="<%= it.description || 'Personal blog and thoughts' %>">
+  
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="/styles.css">
+  
+  <title><%= it.title ? `${it.title} - tlef.ca` : 'tlef.ca' %></title>
+</head>
+<body>
+  <%~ include('../partials/header', it) %>
+  <%~ include('../partials/navbar', it) %>
+
+  <main class="blog-container">
+    <%~ it.body %>
+  </main>
+
+  <%~ include('../partials/footer', it) %>
+  
+  <!-- SPA Navigation Script -->
+  <script>
+    // SPA Navigation Logic
+    document.addEventListener('click', function (e) {
+      const link = e.target.closest('a[data-spa-link]');
+      if (link) {
+        e.preventDefault();
+        const url = link.getAttribute('href');
+        loadPage(url);
+      }
+    });
+
+    window.addEventListener('popstate', function () {
+      loadPage(location.pathname);
+    });
+
+    function loadPage(url) {
+      // For post pages, fetch JSON data and render
+      if (url.startsWith('/posts/') && url !== '/posts') {
+        fetch(`/api${url}`)
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+          }
+          return res.json();
+        })
+        .then(data => {
+          const mainContent = document.querySelector('main.blog-container');
+          const formattedDate = data.date ? new Date(data.date).toLocaleDateString() : '';
+          const tagsArray = Array.isArray(data.tags) ? data.tags : (data.tags ? data.tags.split(',').map(t => t.trim()) : []);
+          
+          mainContent.innerHTML = `
+            <article class="post">
+              <header class="post-header">
+                <h1>${data.title || data.slug}</h1>
+                <div class="post-meta">
+                  ${formattedDate ? `<time datetime="${data.date}">${formattedDate}</time>` : ''}
+                  ${data.author ? ` • By ${data.author}` : ''}
+                </div>
+                ${tagsArray.length ? `<div class="post-tags">${tagsArray.map(tag => `<span>${tag}</span>`).join('')}</div>` : ''}
+              </header>
+              <div class="post-content">
+                ${data.content}
+              </div>
+            </article>
+          `;
+          document.title = `${data.title || data.slug} - tlef.ca`;
+          window.history.pushState({}, '', url);
+        })
+        .catch(err => {
+          console.error('Failed to load post:', err);
+          window.location.href = url; // Fallback to full page load
+        });
+      } else {
+        // For other pages, do a full page load for now
+        window.location.href = url;
+      }
+    }
+
+    // Theme toggle functionality (future enhancement)
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    }
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
+</body>
+</html>

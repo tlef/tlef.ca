@@ -1,2 +1,30 @@
-<h1>Hello!</h1>
-<p>Welcome, <%= it.name %>!</p>
+<% layout('layouts/base') %>
+
+<section>
+  <h2>Welcome</h2>
+  <p>Hi, I'm Tom. This is my corner of the internet where I write about technology, software development, and whatever else catches my interest.</p>
+  
+  <h3>Recent Posts</h3>
+  <% if (it.recentPosts && it.recentPosts.length) { %>
+    <ul class="post-list">
+      <% it.recentPosts.forEach(function(post) { %>
+        <li>
+          <h4><a href="/posts/<%= post.slug %>" data-spa-link><%= post.title || post.slug %></a></h4>
+          <div class="post-meta">
+            <% if (post.date) { %><time datetime="<%= post.date %>"><%= new Date(post.date).toLocaleDateString() %></time><% } %>
+            <% if (post.author) { %> • By <%= post.author %><% } %>
+          </div>
+          <% if (post.summary) { %><div class="post-summary"><%= post.summary %></div><% } %>
+        </li>
+      <% }) %>
+    </ul>
+    <p><a href="/posts" data-spa-link>View all posts →</a></p>
+  <% } else { %>
+    <p>No posts yet. <a href="/posts" data-spa-link>Check the blog section</a> for updates.</p>
+  <% } %>
+</section>
+
+<section>
+  <h3>About</h3>
+  <p>I'm a software developer with interests in web technologies, system architecture, and the intersection of technology and society. You can find me on <a href="https://github.com/tlef" target="_blank" rel="noopener">GitHub</a> or reach out via email.</p>
+</section>

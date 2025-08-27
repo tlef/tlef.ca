@@ -1,0 +1,79 @@
+/* Import Pico CSS from CDN - will be replaced with local copy in production */
+@import url('https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css');
+
+/* Custom overrides and utilities */
+:root {
+	--blog-max-width: 65ch;
+	--nav-height: 4rem;
+}
+
+/* Blog-specific layout */
+.blog-container {
+	max-width: var(--blog-max-width);
+	margin: 0 auto;
+	padding: 0 var(--pico-spacing);
+}
+
+/* Post list styling */
+.post-list {
+	list-style: none;
+	padding: 0;
+}
+
+.post-list li {
+	margin-bottom: var(--pico-spacing);
+	padding: var(--pico-spacing);
+	border: var(--pico-border-width) solid var(--pico-border-color);
+	border-radius: var(--pico-border-radius);
+}
+
+.post-meta {
+	color: var(--pico-muted-color);
+	font-size: 0.875em;
+	margin-bottom: 0.5rem;
+}
+
+.post-summary {
+	margin-top: 0.5rem;
+}
+
+/* Navigation enhancements */
+nav[data-theme='light'] {
+	background-color: var(--pico-background-color);
+	border-bottom: var(--pico-border-width) solid var(--pico-border-color);
+}
+
+/* Article styling */
+article.post {
+	margin-bottom: 2rem;
+}
+
+.post-header {
+	margin-bottom: 2rem;
+	padding-bottom: 1rem;
+	border-bottom: var(--pico-border-width) solid var(--pico-border-color);
+}
+
+.post-tags {
+	margin-top: 1rem;
+}
+
+.post-tags span {
+	display: inline-block;
+	background-color: var(--pico-primary-background);
+	color: var(--pico-primary-inverse);
+	padding: 0.25rem 0.5rem;
+	border-radius: var(--pico-border-radius);
+	font-size: 0.75em;
+	margin-right: 0.5rem;
+	margin-bottom: 0.25rem;
+}
+
+/* Footer styling */
+footer {
+	margin-top: 3rem;
+	padding-top: 2rem;
+	border-top: var(--pico-border-width) solid var(--pico-border-color);
+	text-align: center;
+	color: var(--pico-muted-color);
+}

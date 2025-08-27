@@ -1,12 +1,41 @@
+<% layout('layouts/base') %>
+
 <section class="posts-index">
-  <h1>Blog Posts</h1>
-  <ul>
-    <% it.posts.forEach(function(post) { %>
-      <li>
-        <a href="/posts/<%= post.slug %>"><%= post.title || post.slug %></a>
-        <% if (post.date) { %> <span class="date">(<%= post.date %>)</span><% } %>
-        <% if (post.summary) { %> - <%= post.summary %><% } %>
-      </li>
-    <% }) %>
-  </ul>
+  <header>
+    <h1>Blog Posts</h1>
+    <p>Thoughts on technology, software development, and life.</p>
+  </header>
+  
+  <% if (it.posts && it.posts.length) { %>
+    <ul class="post-list">
+      <% it.posts.forEach(function(post) { %>
+        <li>
+          <article>
+            <h2><a href="/posts/<%= post.slug %>" data-spa-link><%= post.title || post.slug %></a></h2>
+            <div class="post-meta">
+              <% if (post.date) { %><time datetime="<%= post.date %>"><%= new Date(post.date).toLocaleDateString() %></time><% } %>
+              <% if (post.author) { %> • By <%= post.author %><% } %>
+              <% if (post.readingTime) { %> • <%= post.readingTime %> min read<% } %>
+            </div>
+            <% if (post.summary) { %><div class="post-summary"><%= post.summary %></div><% } %>
+            <% if (post.tags) { %>
+              <% let tagsArray = Array.isArray(post.tags) ? post.tags : post.tags.split(','); %>
+              <% if (tagsArray.length > 0) { %>
+                <div class="post-tags">
+                  <% tagsArray.forEach(function(tag) { %>
+                    <span><%= tag.trim() %></span>
+                  <% }) %>
+                </div>
+              <% } %>
+            <% } %>
+          </article>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <div>
+      <p>No posts available yet.</p>
+      <p><a href="/" data-spa-link>← Back to home</a></p>
+    </div>
+  <% } %>
 </section>

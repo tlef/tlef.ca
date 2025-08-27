@@ -1,0 +1,11 @@
+<footer>
+  <div class="blog-container">
+    <p>&copy; <%= new Date().getFullYear() %> tlef.ca. Built with TypeScript, Koa, and Pico CSS.</p>
+    <p>
+      <small>
+        <a href="/feed.xml">RSS</a> • 
+        <a href="https://github.com/tlef/tlef.ca" target="_blank" rel="noopener">Source Code</a>
+      </small>
+    </p>
+  </div>
+</footer>

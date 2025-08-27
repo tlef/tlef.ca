@@ -1,77 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= it.title || it.slug %> - tlef.ca</title>
-</head>
-<body>
-  <nav>
-    <a href="/" data-spa-link>Home</a>
-    <a href="/posts" data-spa-link>Blog</a>
-  </nav>
-  
-  <main id="main-content">
-    <article class="post" id="post-content">
-      <h1><%= it.title %></h1>
-      <% if (it.date) { %><p class="date"><%= new Date(it.date).toLocaleDateString() %></p><% } %>
-      <% if (it.author) { %><p class="author">By <%= it.author %></p><% } %>
-      <% if (it.tags) { %><p class="tags">Tags: <%= Array.isArray(it.tags) ? it.tags.join(', ') : it.tags %></p><% } %>
-      <div class="content">
-        <%~ it.content %>
+<% layout('layouts/base') %>
+
+<article class="post">
+  <header class="post-header">
+    <h1><%= it.title || it.slug %></h1>
+    <div class="post-meta">
+      <% if (it.date) { %><time datetime="<%= it.date %>"><%= new Date(it.date).toLocaleDateString() %></time><% } %>
+      <% if (it.author) { %> • By <%= it.author %><% } %>
+      <% if (it.readingTime) { %> • <%= it.readingTime %> min read<% } %>
+    </div>
+    <% if (it.tags && (Array.isArray(it.tags) ? it.tags : it.tags.split(',')).length) { %>
+      <div class="post-tags">
+        <% (Array.isArray(it.tags) ? it.tags : it.tags.split(',')).forEach(function(tag) { %>
+          <span><%= tag.trim() %></span>
+        <% }) %>
       </div>
-    </article>
-  </main>
-
-  <script>
-    // SPA Navigation Logic
-    document.addEventListener('click', function (e) {
-      const link = e.target.closest('a[data-spa-link]');
-      if (link) {
-        e.preventDefault();
-        const url = link.getAttribute('href');
-        loadPage(url);
-      }
-    });
-
-    window.addEventListener('popstate', function () {
-      loadPage(location.pathname);
-    });
-
-    function loadPage(url) {
-      // For post pages, fetch JSON data and render
-      if (url.startsWith('/posts/') && url !== '/posts') {
-        fetch(`/api${url}`)
-        .then(res => {
-          if (!res.ok) {
-            throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-          }
-          return res.json();
-        })
-        .then(data => {
-          const postContent = document.getElementById('post-content');
-          const formattedDate = data.date ? new Date(data.date).toLocaleDateString() : '';
-          const tagsArray = Array.isArray(data.tags) ? data.tags : (data.tags ? data.tags.split(',').map(t => t.trim()) : []);
-          
-          postContent.innerHTML = `
-            <h1>${data.title || data.slug}</h1>
-            ${formattedDate ? `<p class="date">${formattedDate}</p>` : ''}
-            ${data.author ? `<p class="author">By ${data.author}</p>` : ''}
-            ${tagsArray.length ? `<p class="tags">Tags: ${tagsArray.join(', ')}</p>` : ''}
-            <div class="content">${data.content}</div>
-          `;
-          document.title = `${data.title || data.slug} - tlef.ca`;
-          window.history.pushState({}, '', url);
-        })
-        .catch(err => {
-          console.error('Failed to load post:', err);
-          window.location.href = url; // Fallback to full page load
-        });
-      } else {
-        // For other pages, do a full page load for now
-        window.location.href = url;
-      }
-    }
-  </script>
-</body>
-</html>
+    <% } %>
+  </header>
+  
+  <div class="post-content">
+    <%~ it.content %>
+  </div>
+  
+  <footer class="post-footer">
+    <p><a href="/posts" data-spa-link>← Back to all posts</a></p>
+  </footer>
+</article>

@@ -10,22 +10,15 @@ import { ApiPage } from './pages/api.js';
 import { PostsApi } from './api/posts.js';
 import { PostPage } from './pages/post.js';
 import { PostsController } from './controllers/posts-controller.js';
+import { AboutPage } from './pages/about.js';
 
 export class App {
 	protected app: Koa;
 	protected router: Router;
 
-	protected apiPage: ApiPage;
-	protected homePage: HomePage;
-	protected postPage: PostPage;
-
-	protected postsController: PostsController;
-
 	constructor() {
 		this.app = new Koa();
 		this.router = new Router();
-
-		this.postsController = new PostsController();
 
 		this.app.use(
 			BodyParser.koaBody({
@@ -38,18 +31,22 @@ export class App {
 		this.app.use(serve('./public'));
 
 		const renderer = new Renderer();
+		const postsController = new PostsController();
 
-		this.homePage = new HomePage(renderer);
-		this.homePage.registerRoutes(this.router);
+		const homePage = new HomePage(renderer);
+		homePage.registerRoutes(this.router);
 
-		this.postPage = new PostPage(renderer, this.postsController);
-		this.postPage.registerRoutes(this.router);
+		const postPage = new PostPage(renderer, postsController);
+		postPage.registerRoutes(this.router);
 
-		const postsApi = new PostsApi(this.postsController);
+		const aboutPage = new AboutPage(renderer);
+		aboutPage.registerRoutes(this.router);
+
+		const postsApi = new PostsApi(postsController);
 		const apiEndpoints = [...postsApi.getEndpoints()];
 
-		this.apiPage = new ApiPage(apiEndpoints);
-		this.apiPage.registerRoutes(this.router);
+		const apiPage = new ApiPage(apiEndpoints);
+		apiPage.registerRoutes(this.router);
 
 		this.app.use(this.router.routes());
 	}
