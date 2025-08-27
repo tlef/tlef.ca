@@ -1,8 +1,26 @@
-<header>
-  <div class="blog-container">
-    <hgroup>
-      <h1><a href="/" data-spa-link style="text-decoration: none; color: inherit;">tlef.ca</a></h1>
-      <p>Personal blog and thoughts on technology, software, and life</p>
-    </hgroup>
+<header class="site-header">
+  <div class="header-content">
+    <div class="site-branding">
+      <h1 class="site-title">
+        <a href="/" data-spa-link>tlef.ca</a>
+      </h1>
+    </div>
+    
+    <!-- Hamburger button for mobile -->
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    
+    <nav class="site-nav">
+      <ul>
+        <li><a href="/" data-spa-link>Home</a></li>
+        <li><a href="/posts" data-spa-link>Articles</a></li>
+        <li><a href="/about" data-spa-link>About</a></li>
+        <li><a href="/contact" data-spa-link>Contact</a></li>
+        <li><button onclick="toggleTheme()" class="theme-toggle" aria-label="Toggle dark mode">🌓</button></li>
+      </ul>
+    </nav>
   </div>
 </header>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="<%= it.description || 'Personal blog and thoughts' %>">
+  <meta name="description" content="<%= it.description || 'Personal blog and thoughts on technology, software development, and life' %>">
   
   <!-- Favicon -->
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -13,20 +13,53 @@
   <!-- Styles -->
   <link rel="stylesheet" href="/styles.css">
   
-  <title><%= it.title ? `${it.title} - tlef.ca` : 'tlef.ca' %></title>
+  <title><%= it.title ? `${it.title} - tlef.ca` : 'tlef.ca - Personal Blog' %></title>
 </head>
 <body>
-  <%~ include('../partials/header', it) %>
-  <%~ include('../partials/navbar', it) %>
+  <div class="site-container">
+    <%~ include('../partials/header', it) %>
 
-  <main class="blog-container">
-    <%~ it.body %>
-  </main>
+    <main>
+      <%~ it.body %>
+    </main>
 
-  <%~ include('../partials/footer', it) %>
+    <%~ include('../partials/footer', it) %>
+  </div>
   
   <!-- SPA Navigation Script -->
   <script>
+    // Hamburger menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const navToggle = document.querySelector('.nav-toggle');
+      const siteNav = document.querySelector('.site-nav');
+      
+      if (navToggle && siteNav) {
+        navToggle.addEventListener('click', function() {
+          const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+          
+          navToggle.setAttribute('aria-expanded', !isExpanded);
+          siteNav.classList.toggle('nav-open');
+        });
+        
+        // Close menu when clicking on a nav link
+        const navLinks = siteNav.querySelectorAll('a');
+        navLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            navToggle.setAttribute('aria-expanded', 'false');
+            siteNav.classList.remove('nav-open');
+          });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!navToggle.contains(e.target) && !siteNav.contains(e.target)) {
+            navToggle.setAttribute('aria-expanded', 'false');
+            siteNav.classList.remove('nav-open');
+          }
+        });
+      }
+    });
+
     // SPA Navigation Logic
     document.addEventListener('click', function (e) {
       const link = e.target.closest('a[data-spa-link]');
@@ -52,24 +85,29 @@
           return res.json();
         })
         .then(data => {
-          const mainContent = document.querySelector('main.blog-container');
+          const mainContent = document.querySelector('main');
           const formattedDate = data.date ? new Date(data.date).toLocaleDateString() : '';
           const tagsArray = Array.isArray(data.tags) ? data.tags : (data.tags ? data.tags.split(',').map(t => t.trim()) : []);
           
           mainContent.innerHTML = `
-            <article class="post">
-              <header class="post-header">
-                <h1>${data.title || data.slug}</h1>
-                <div class="post-meta">
-                  ${formattedDate ? `<time datetime="${data.date}">${formattedDate}</time>` : ''}
-                  ${data.author ? ` • By ${data.author}` : ''}
+            <div class="content-container">
+              <article class="post">
+                <header class="post-header">
+                  <h1>${data.title || data.slug}</h1>
+                  <div class="article-meta">
+                    ${formattedDate ? `<time datetime="${data.date}">${formattedDate}</time>` : ''}
+                    ${data.author ? ` • By ${data.author}` : ''}
+                  </div>
+                  ${tagsArray.length ? `<div class="article-tags">${tagsArray.map(tag => `<span class="article-tag">${tag}</span>`).join('')}</div>` : ''}
+                </header>
+                <div class="post-content">
+                  ${data.content}
                 </div>
-                ${tagsArray.length ? `<div class="post-tags">${tagsArray.map(tag => `<span>${tag}</span>`).join('')}</div>` : ''}
-              </header>
-              <div class="post-content">
-                ${data.content}
-              </div>
-            </article>
+                <footer class="post-footer">
+                  <p><a href="/posts" data-spa-link>← Back to all posts</a></p>
+                </footer>
+              </article>
+            </div>
           `;
           document.title = `${data.title || data.slug} - tlef.ca`;
           window.history.pushState({}, '', url);

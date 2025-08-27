@@ -1,41 +1,47 @@
 <% layout('layouts/base') %>
 
-<section class="posts-index">
-  <header>
-    <h1>Blog Posts</h1>
-    <p>Thoughts on technology, software development, and life.</p>
-  </header>
-  
-  <% if (it.posts && it.posts.length) { %>
-    <ul class="post-list">
-      <% it.posts.forEach(function(post) { %>
-        <li>
-          <article>
-            <h2><a href="/posts/<%= post.slug %>" data-spa-link><%= post.title || post.slug %></a></h2>
-            <div class="post-meta">
-              <% if (post.date) { %><time datetime="<%= post.date %>"><%= new Date(post.date).toLocaleDateString() %></time><% } %>
+<div class="content-container">
+  <section class="intro-section">
+    <h1 class="intro-title">Articles and Tutorials</h1>
+    <p class="intro-text">
+      Deep dives into software development, web technologies, and the craft of building great software.
+    </p>
+  </section>
+
+  <section class="content-section">
+    <% if (it.posts && it.posts.length) { %>
+      <div class="articles-grid">
+        <% it.posts.forEach(function(post) { %>
+          <article class="article-card">
+            <h2 class="article-title">
+              <a href="/posts/<%= post.slug %>" data-spa-link><%= post.title || post.slug %></a>
+            </h2>
+            <div class="article-meta">
+              <% if (post.date) { %><time datetime="<%= post.date %>"><%= new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></time><% } %>
               <% if (post.author) { %> • By <%= post.author %><% } %>
               <% if (post.readingTime) { %> • <%= post.readingTime %> min read<% } %>
             </div>
-            <% if (post.summary) { %><div class="post-summary"><%= post.summary %></div><% } %>
+            <% if (post.summary) { %>
+              <div class="article-summary"><%= post.summary %></div>
+            <% } %>
             <% if (post.tags) { %>
               <% let tagsArray = Array.isArray(post.tags) ? post.tags : post.tags.split(','); %>
               <% if (tagsArray.length > 0) { %>
-                <div class="post-tags">
+                <div class="article-tags">
                   <% tagsArray.forEach(function(tag) { %>
-                    <span><%= tag.trim() %></span>
+                    <a href="/posts?tag=<%= encodeURIComponent(tag.trim()) %>" class="article-tag" data-spa-link><%= tag.trim() %></a>
                   <% }) %>
                 </div>
               <% } %>
             <% } %>
           </article>
-        </li>
-      <% }) %>
-    </ul>
-  <% } else { %>
-    <div>
-      <p>No posts available yet.</p>
-      <p><a href="/" data-spa-link>← Back to home</a></p>
-    </div>
-  <% } %>
-</section>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <div style="text-align: center; padding: 3rem 0;">
+        <p style="color: var(--muted-text); font-size: 1.125rem;">No articles available yet.</p>
+        <p><a href="/" data-spa-link>← Back to home</a></p>
+      </div>
+    <% } %>
+  </section>
+</div>
