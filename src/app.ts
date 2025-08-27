@@ -7,7 +7,9 @@ import { bearerToken } from 'koa-bearer-token';
 import { Renderer } from './libs/renderer/index.js';
 import { HomePage } from './pages/home.js';
 import { ApiPage } from './pages/api.js';
-import { endpoints as postsEndpoints } from './api/posts.js';
+import { PostsApi } from './api/posts.js';
+import { PostPage } from './pages/post.js';
+import { PostsController } from './controllers/posts-controller.js';
 
 export class App {
 	protected app: Koa;
@@ -15,10 +17,15 @@ export class App {
 
 	protected apiPage: ApiPage;
 	protected homePage: HomePage;
+	protected postPage: PostPage;
+
+	protected postsController: PostsController;
 
 	constructor() {
 		this.app = new Koa();
 		this.router = new Router();
+
+		this.postsController = new PostsController();
 
 		this.app.use(
 			BodyParser.koaBody({
@@ -35,7 +42,11 @@ export class App {
 		this.homePage = new HomePage(renderer);
 		this.homePage.registerRoutes(this.router);
 
-		const apiEndpoints = [...postsEndpoints];
+		this.postPage = new PostPage(renderer, this.postsController);
+		this.postPage.registerRoutes(this.router);
+
+		const postsApi = new PostsApi(this.postsController);
+		const apiEndpoints = [...postsApi.getEndpoints()];
 
 		this.apiPage = new ApiPage(apiEndpoints);
 		this.apiPage.registerRoutes(this.router);
