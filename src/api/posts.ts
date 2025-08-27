@@ -23,12 +23,27 @@ export class PostsApi {
 		];
 	}
 
-	async getPosts(): Promise<{ body: string; status: number }> {
-		const posts = this.postsController.getPosts();
+	async getPosts(
+		args: Record<string, unknown>,
+	): Promise<{ body: string; status: number }> {
+		const { search, offset, count, tags } = args;
+
+		const posts = this.postsController.getPosts({
+			search: typeof search === 'string' ? search : undefined,
+			offset: typeof offset === 'string' ? parseInt(offset) : undefined,
+			limit: typeof count === 'string' ? parseInt(count) : undefined,
+			tags: Array.isArray(tags)
+				? tags
+				: typeof tags === 'string'
+					? tags.split(',')
+					: undefined,
+		});
 		return { body: JSON.stringify(posts), status: 200 };
 	}
 
-	async getPost(args: unknown): Promise<{ body: string; status: number }> {
+	async getPost(
+		args: Record<string, unknown>,
+	): Promise<{ body: string; status: number }> {
 		const { slug } = args as { slug: string };
 		const post = this.postsController.getPost(slug);
 

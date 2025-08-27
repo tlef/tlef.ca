@@ -3,6 +3,9 @@ import type Router from 'koa-router';
 import { type IRenderer } from '../libs/renderer/index.js';
 import { PostsController } from '../controllers/posts-controller.js';
 
+const POSTS_PER_PAGE = 3;
+const DEFAULT_OFFSET = 0;
+
 export class PostPage {
 	protected renderer: IRenderer;
 	protected postsController: PostsController;
@@ -18,7 +21,15 @@ export class PostPage {
 	}
 
 	private async getPosts(ctx: Context): Promise<void> {
-		const posts = this.postsController.getPosts();
+		const { search, offset, count, tags } = ctx.query;
+
+		const posts = this.postsController.getPosts({
+			search: typeof search === 'string' ? search : undefined,
+			offset: typeof offset === 'string' ? parseInt(offset) : DEFAULT_OFFSET,
+			limit: typeof count === 'string' ? parseInt(count) : POSTS_PER_PAGE,
+			tags: typeof tags === 'string' ? tags.split(',') : undefined,
+		});
+
 		ctx.body = this.renderer.render('posts', { posts });
 	}
 

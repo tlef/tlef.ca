@@ -33,7 +33,7 @@ export class App {
 		const renderer = new Renderer();
 		const postsController = new PostsController();
 
-		const homePage = new HomePage(renderer);
+		const homePage = new HomePage(renderer, postsController);
 		homePage.registerRoutes(this.router);
 
 		const postPage = new PostPage(renderer, postsController);

@@ -5,5 +5,5 @@ export interface IApiEndpoint {
 }
 
 export interface IApiEndpointHandler {
-	(params: any): Promise<{ body: any; status: number }>;
+	(args: Record<string, unknown>): Promise<{ body: any; status: number }>;
 }
