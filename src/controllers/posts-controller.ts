@@ -17,13 +17,22 @@ export interface IPost {
 	content: string;
 }
 
+const CATEGORIES = {
+	js: 'JavaScript',
+	slack: 'Slack',
+};
+
 export class PostsController {
 	private posts: Record<string, IPost>;
 	private orderedKeys: string[];
+	private tagCounts: Record<string, number>;
+	private categoryMeta: { title: string; tag: string; count: number }[];
 
 	constructor() {
 		this.posts = {};
 		this.orderedKeys = [];
+		this.tagCounts = {};
+		this.categoryMeta = [];
 
 		const __filename = fileURLToPath(import.meta.url);
 		const __dirname = path.dirname(__filename);
@@ -49,13 +58,31 @@ export class PostsController {
 				summary: parsed.data.summary,
 				content: parsed.content,
 			};
+
+			for (const tag of this.posts[key].tags) {
+				if (!this.tagCounts[tag]) {
+					this.tagCounts[tag] = 1;
+				} else {
+					this.tagCounts[tag]++;
+				}
+			}
 		}
+
+		this.categoryMeta = Object.entries(CATEGORIES).map(([tag, title]) => ({
+			title,
+			tag,
+			count: this.tagCounts[tag] ?? 0,
+		}));
 
 		this.orderedKeys = Object.keys(this.posts).sort((a, b) => {
 			const dateA = new Date(this.posts[a]?.date ?? 0).getTime();
 			const dateB = new Date(this.posts[b]?.date ?? 0).getTime();
 			return dateB - dateA;
 		});
+	}
+
+	getCategories(): { title: string; tag: string; count: number }[] {
+		return this.categoryMeta;
 	}
 
 	getPosts(options: {

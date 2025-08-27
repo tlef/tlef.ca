@@ -18,6 +18,11 @@ export class HomePage {
 
 	private async getHome(ctx: Context): Promise<void> {
 		const posts = this.postsController.getPosts({ limit: 2 });
-		ctx.body = this.renderer.render('home', { name: 'user', posts });
+		const categories = this.postsController.getCategories();
+		ctx.body = this.renderer.render('home', {
+			name: 'user',
+			posts,
+			categories,
+		});
 	}
 }

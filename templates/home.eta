@@ -2,92 +2,34 @@
 
 <div class="site-container">
   <div class="home-grid">
-    <!-- Main content column (2/3) -->
     <main class="main-content">
       <section>
         <h2 class="main-section-header">Latest Articles</h2>
         
-        <% if (it.recentPosts && it.recentPosts.length) { %>
-          <div class="featured-posts">
-            <% it.recentPosts.slice(0, 3).forEach(function(post) { %>
-              <article class="featured-post">
-                <h3 class="featured-post-title">
-                  <a href="/posts/<%= post.slug %>" data-spa-link><%= post.title || post.slug %></a>
-                </h3>
-                <div class="featured-post-meta">
-                  <% if (post.date) { %><time datetime="<%= post.date %>"><%= new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></time><% } %>
-                  <% if (post.author) { %> • By <%= post.author %><% } %>
-                  <% if (post.readingTime) { %> • <%= post.readingTime %> min read<% } %>
-                </div>
-                <% if (post.summary) { %>
-                  <div class="featured-post-excerpt"><%= post.summary %></div>
-                <% } else { %>
-                  <div class="featured-post-excerpt">An insightful article about software development, web technologies, and building great applications. Click to read the full post and learn something new.</div>
-                <% } %>
-                <% if (post.tags) { %>
-                  <% let tagsArray = Array.isArray(post.tags) ? post.tags : post.tags.split(','); %>
-                  <% if (tagsArray.length > 0) { %>
-                    <div class="featured-post-tags">
-                      <% tagsArray.forEach(function(tag) { %>
-                        <a href="/posts?tag=<%= encodeURIComponent(tag.trim()) %>" class="featured-post-tag" data-spa-link><%= tag.trim() %></a>
-                      <% }) %>
-                    </div>
-                  <% } %>
-                <% } %>
-              </article>
-            <% }) %>
-          </div>
+					<div class="featured-posts">
+						<% if (it.posts && it.posts.length) { %>
+							<% it.posts.forEach(function(post) { %>
+								<article class="featured-post">
+									<h3 class="featured-post-title">
+									<a href="/posts/<%= post.slug %>" data-spa-link><%= post.title || post.slug %></a>
+									</h3>
+									<% if (post.summary) { %>
+									<div class="featured-post-excerpt"><%= post.summary %></div>
+									<% } else { %>
+									<div class="featured-post-excerpt">An insightful article about software development, web technologies, and building great applications. Click to read the full post and learn something new.</div>
+									<% } %>
+									<a href="/posts/<%= post.slug %>" data-spa-link class="read-more-link">Read more</a>
+								</article>
+							<% }) %>
+						<% } else { %>
+							<div class="featured-post-excerpt">No articles found.</div>
+						<% } %>
+						</div>
+						
+						<p style="text-align: left; margin-top: 2rem;">
+						<a href="/posts" data-spa-link style="font-weight: 600; color: var(--accent-color);">View all articles →</a>
+						</p>
           
-          <p style="text-align: left; margin-top: 2rem;">
-            <a href="/posts" data-spa-link style="font-weight: 600; color: var(--accent-color);">View all articles →</a>
-          </p>
-        <% } else { %>
-          <!-- Placeholder content when no posts -->
-          <div class="featured-posts">
-            <article class="featured-post">
-              <h3 class="featured-post-title">
-                <a href="/posts/building-modern-web-apps" data-spa-link>Building Modern Web Applications</a>
-              </h3>
-              <div class="featured-post-meta">August 15, 2025 • By Tom • 8 min read</div>
-              <div class="featured-post-excerpt">A comprehensive guide to building scalable, maintainable web applications using modern frameworks and best practices. We'll explore architecture patterns, performance optimization, and deployment strategies.</div>
-              <div class="featured-post-tags">
-                <a href="/posts?tag=web-development" class="featured-post-tag" data-spa-link>Web Development</a>
-                <a href="/posts?tag=architecture" class="featured-post-tag" data-spa-link>Architecture</a>
-                <a href="/posts?tag=javascript" class="featured-post-tag" data-spa-link>JavaScript</a>
-              </div>
-            </article>
-            
-            <article class="featured-post">
-              <h3 class="featured-post-title">
-                <a href="/posts/typescript-best-practices" data-spa-link>TypeScript Best Practices for Large Applications</a>
-              </h3>
-              <div class="featured-post-meta">August 10, 2025 • By Tom • 12 min read</div>
-              <div class="featured-post-excerpt">Learn how to structure TypeScript projects for maintainability and scalability. Covering type design, module organization, and advanced patterns that make large codebases manageable.</div>
-              <div class="featured-post-tags">
-                <a href="/posts?tag=typescript" class="featured-post-tag" data-spa-link>TypeScript</a>
-                <a href="/posts?tag=best-practices" class="featured-post-tag" data-spa-link>Best Practices</a>
-                <a href="/posts?tag=architecture" class="featured-post-tag" data-spa-link>Architecture</a>
-              </div>
-            </article>
-            
-            <article class="featured-post">
-              <h3 class="featured-post-title">
-                <a href="/posts/web-performance-optimization" data-spa-link>Web Performance Optimization: A Complete Guide</a>
-              </h3>
-              <div class="featured-post-meta">August 5, 2025 • By Tom • 15 min read</div>
-              <div class="featured-post-excerpt">Deep dive into web performance optimization techniques. From critical rendering path optimization to advanced caching strategies, learn how to make your websites lightning fast.</div>
-              <div class="featured-post-tags">
-                <a href="/posts?tag=performance" class="featured-post-tag" data-spa-link>Performance</a>
-                <a href="/posts?tag=optimization" class="featured-post-tag" data-spa-link>Optimization</a>
-                <a href="/posts?tag=web-development" class="featured-post-tag" data-spa-link>Web Development</a>
-              </div>
-            </article>
-          </div>
-          
-          <p style="text-align: left; margin-top: 2rem;">
-            <a href="/posts" data-spa-link style="font-weight: 600; color: var(--accent-color);">View all articles →</a>
-          </p>
-        <% } %>
       </section>
     </main>
 
@@ -96,13 +38,15 @@
       <div class="sidebar-section">
         <h3 class="sidebar-title">Categories</h3>
         <ul class="sidebar-list">
-          <li><a href="/posts?category=javascript" data-spa-link>JavaScript <span class="category-count">(12)</span></a></li>
-          <li><a href="/posts?category=typescript" data-spa-link>TypeScript <span class="category-count">(8)</span></a></li>
-          <li><a href="/posts?category=web-development" data-spa-link>Web Development <span class="category-count">(15)</span></a></li>
-          <li><a href="/posts?category=architecture" data-spa-link>Software Architecture <span class="category-count">(6)</span></a></li>
-          <li><a href="/posts?category=performance" data-spa-link>Performance <span class="category-count">(4)</span></a></li>
-          <li><a href="/posts?category=career" data-spa-link>Career <span class="category-count">(3)</span></a></li>
-          <li><a href="/posts?category=tools" data-spa-link>Tools & Setup <span class="category-count">(5)</span></a></li>
+				<% if (it.categories && it.categories.length) { %>
+					<% it.categories.forEach(function(category) { %>
+						<li>
+							<a href="/posts?tag=<%= category.tag %>" data-spa-link>
+								<%= category.title %> <span class="category-count">(<%= category.count %>)</span>
+							</a>
+						</li>
+					<% }) %>
+				<% } %>
         </ul>
       </div>
 
@@ -122,7 +66,7 @@
       <div class="sidebar-section">
         <h3 class="sidebar-title">About</h3>
         <p style="color: var(--muted-text); line-height: 1.6; font-size: 0.925rem;">
-          Hi, I'm Tom. I write about software development, web technologies, and building great user experiences. 
+          Hi, I'm Tim. I write about software development, web technologies, and building great user experiences. 
           <a href="/about" data-spa-link style="color: var(--accent-color);">Learn more →</a>
         </p>
       </div>
