@@ -22,12 +22,14 @@
 		"koa-router": "^14.0.0",
 		"koa-static": "^5.0.0",
 		"marked": "^16.2.0",
+		"prismjs": "^1.30.0",
 		"typescript": "^5.9.2"
 	},
 	"devDependencies": {
 		"@types/koa__cors": "^5.0.0",
 		"@types/koa-router": "^7.4.8",
 		"@types/koa-static": "^4.0.4",
+		"@types/prismjs": "^1.26.5",
 		"@typescript-eslint/eslint-plugin": "^8.41.0",
 		"@typescript-eslint/parser": "^8.41.0",
 		"eslint": "^9.34.0",

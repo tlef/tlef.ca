@@ -1,46 +1,4 @@
 <footer class="site-footer">
-  <div class="footer-grid">
-    <div class="footer-section">
-      <h3>Browse by Category</h3>
-      <ul>
-        <li><a href="/posts?category=javascript" data-spa-link>JavaScript</a></li>
-        <li><a href="/posts?category=typescript" data-spa-link>TypeScript</a></li>
-        <li><a href="/posts?category=web-dev" data-spa-link>Web Development</a></li>
-        <li><a href="/posts?category=architecture" data-spa-link>Architecture</a></li>
-      </ul>
-    </div>
-    
-    <div class="footer-section">
-      <h3>Popular Content</h3>
-      <ul>
-        <li><a href="/posts/building-modern-web-apps" data-spa-link>Building Modern Web Apps</a></li>
-        <li><a href="/posts/typescript-best-practices" data-spa-link>TypeScript Best Practices</a></li>
-        <li><a href="/posts/software-architecture" data-spa-link>Software Architecture</a></li>
-      </ul>
-    </div>
-    
-    <div class="footer-section">
-      <h3>Connect</h3>
-      <ul>
-        <li><a href="https://github.com/tlef" target="_blank" rel="noopener">GitHub</a></li>
-        <li><a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener">LinkedIn</a></li>
-        <li><a href="/rss.xml" target="_blank">RSS Feed</a></li>
-        <li><a href="mailto:hello@tlef.ca">Email</a></li>
-      </ul>
-    </div>
-    
-    <div class="footer-section">
-      <h3>General</h3>
-      <ul>
-        <li><a href="/about" data-spa-link>About</a></li>
-        <li><a href="/contact" data-spa-link>Contact</a></li>
-        <li><a href="/privacy" data-spa-link>Privacy</a></li>
-        <li><a href="/uses" data-spa-link>Uses</a></li>
-      </ul>
-    </div>
-  </div>
-  
   <div class="footer-bottom">
-    <p>&copy; <%= new Date().getFullYear() %> tlef.ca. Built with TypeScript, Koa, and Pico CSS.</p>
   </div>
 </footer>

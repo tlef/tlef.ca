@@ -1,0 +1,193 @@
+/* Custom PrismJS Theme using PicoCSS colors */
+
+/* Base styles - transparent backgrounds, inherit text */
+code[class*='language-'],
+pre[class*='language-'] {
+	color: var(--pico-color); /* Inherit text color from PicoCSS */
+	background: transparent; /* Transparent background */
+	font-family: var(--pico-font-family-monospace, 'Courier New', monospace);
+	font-size: 0.875em;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+	tab-size: 4;
+	hyphens: none;
+}
+
+/* Code blocks */
+pre[class*='language-'] {
+	padding: var(--pico-spacing);
+	margin: var(--pico-spacing) 0;
+	overflow: auto;
+	background: var(
+		--pico-card-background-color
+	); /* Use PicoCSS card background */
+	border: 1px solid var(--pico-muted-border-color);
+	border-radius: var(--pico-border-radius);
+}
+
+/* Inline code */
+:not(pre) > code[class*='language-'] {
+	padding: 0.2em 0.4em;
+	border-radius: var(--pico-border-radius);
+	background: var(--pico-code-background-color);
+	color: var(--pico-code-color);
+}
+
+/* Syntax highlighting using PicoCSS color palette */
+
+/* Comments */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: var(--pico-muted-color);
+	font-style: italic;
+}
+
+/* Punctuation */
+.token.punctuation {
+	color: var(--pico-color);
+	opacity: 0.7;
+}
+
+/* Properties, tags, boolean, number, constant, symbol, deleted */
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+	color: var(--pico-primary-500, #1976d2); /* Blue - primary color */
+}
+
+/* Selectors, attr-names, strings, chars, built-ins, inserted */
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: var(--pico-green-500, #388e3c); /* Green */
+}
+
+/* Operators, entities, urls */
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+	color: var(--pico-amber-600, #ffb300); /* Amber/Orange */
+}
+
+/* Keywords, at-rules, important */
+.token.keyword,
+.token.atrule,
+.token.important {
+	color: var(--pico-purple-500, #7b1fa2); /* Purple */
+	font-weight: 600;
+}
+
+/* Functions */
+.token.function,
+.token.class-name {
+	color: var(--pico-cyan-600, #00acc1); /* Cyan */
+}
+
+/* Variables */
+.token.variable {
+	color: var(--pico-red-500, #d32f2f); /* Red */
+}
+
+/* Regex, important */
+.token.regex {
+	color: var(--pico-orange-500, #f57c00); /* Orange */
+}
+
+.token.important {
+	font-weight: bold;
+}
+
+/* Special tokens */
+.token.bold {
+	font-weight: bold;
+}
+
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}
+
+/* Line highlighting (if using line-highlight plugin) */
+.line-highlight {
+	background: var(--pico-primary-100, rgba(25, 118, 210, 0.1));
+	background: linear-gradient(
+		to right,
+		var(--pico-primary-100, rgba(25, 118, 210, 0.1)) 70%,
+		transparent
+	);
+}
+
+/* Line numbers (if using line-numbers plugin) */
+.line-numbers .line-numbers-rows {
+	border-right: 1px solid var(--pico-muted-border-color);
+}
+
+.line-numbers-rows > span:before {
+	color: var(--pico-muted-color);
+}
+
+/* Fallback colors for older browsers or when CSS custom properties aren't available */
+@supports not (color: var(--pico-color)) {
+	.token.property,
+	.token.tag,
+	.token.boolean,
+	.token.number,
+	.token.constant,
+	.token.symbol,
+	.token.deleted {
+		color: #1976d2; /* Blue */
+	}
+
+	.token.selector,
+	.token.attr-name,
+	.token.string,
+	.token.char,
+	.token.builtin,
+	.token.inserted {
+		color: #388e3c; /* Green */
+	}
+
+	.token.operator,
+	.token.entity,
+	.token.url,
+	.language-css .token.string,
+	.style .token.string {
+		color: #ffb300; /* Amber */
+	}
+
+	.token.keyword,
+	.token.atrule {
+		color: #7b1fa2; /* Purple */
+	}
+
+	.token.function,
+	.token.class-name {
+		color: #00acc1; /* Cyan */
+	}
+
+	.token.variable {
+		color: #d32f2f; /* Red */
+	}
+
+	.token.regex {
+		color: #f57c00; /* Orange */
+	}
+}

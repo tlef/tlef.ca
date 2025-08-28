@@ -1,95 +1,132 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="<%= it.description || 'Personal blog and thoughts on technology, software development, and life' %>">
-  
-  <!-- Favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  
-  <!-- Styles -->
-  <link rel="stylesheet" href="/styles.css">
-  
-  <title><%= it.title ? `${it.title} - tlef.ca` : 'tlef.ca - Personal Blog' %></title>
-</head>
-<body>
-  <div class="site-container">
-    <%~ include('../partials/header', it) %>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="description"
+			content="<%= it.description || 'Personal blog and thoughts on technology, software development, and life' %>"
+		/>
 
-    <main>
-      <%~ it.body %>
-    </main>
+		<!-- Load theme immediately to prevent flash -->
+		<script>
+			// Load theme before CSS to prevent flash
+			const savedTheme = localStorage.getItem('theme') || 'light';
+			document.documentElement.setAttribute('data-theme', savedTheme);
 
-    <%~ include('../partials/footer', it) %>
-  </div>
-  
-  <!-- SPA Navigation Script -->
-  <script>
-    // Hamburger menu functionality
-    document.addEventListener('DOMContentLoaded', function() {
-      const navToggle = document.querySelector('.nav-toggle');
-      const siteNav = document.querySelector('.site-nav');
-      
-      if (navToggle && siteNav) {
-        navToggle.addEventListener('click', function() {
-          const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
-          
-          navToggle.setAttribute('aria-expanded', !isExpanded);
-          siteNav.classList.toggle('nav-open');
-        });
-        
-        // Close menu when clicking on a nav link
-        const navLinks = siteNav.querySelectorAll('a');
-        navLinks.forEach(link => {
-          link.addEventListener('click', function() {
-            navToggle.setAttribute('aria-expanded', 'false');
-            siteNav.classList.remove('nav-open');
-          });
-        });
-        
-        // Close menu when clicking outside
-        document.addEventListener('click', function(e) {
-          if (!navToggle.contains(e.target) && !siteNav.contains(e.target)) {
-            navToggle.setAttribute('aria-expanded', 'false');
-            siteNav.classList.remove('nav-open');
-          }
-        });
-      }
-    });
+			// Add preload class to prevent transitions during initial load
+			document.documentElement.classList.add('preload');
+		</script>
 
-    // SPA Navigation Logic
-    document.addEventListener('click', function (e) {
-      const link = e.target.closest('a[data-spa-link]');
-      if (link) {
-        e.preventDefault();
-        const url = link.getAttribute('href');
-        loadPage(url);
-      }
-    });
+		<!-- Favicon -->
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 
-    window.addEventListener('popstate', function () {
-      loadPage(location.pathname);
-    });
+		<!-- Pico CSS - Load directly to prevent FOUC -->
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+		/>
 
-    function loadPage(url) {
-      // For post pages, fetch JSON data and render
-      if (url.startsWith('/posts/') && url !== '/posts') {
-        fetch(`/api${url}`)
-        .then(res => {
-          if (!res.ok) {
-            throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-          }
-          return res.json();
-        })
-        .then(data => {
-          const mainContent = document.querySelector('main');
-          const formattedDate = data.date ? new Date(data.date).toLocaleDateString() : '';
-          const tagsArray = Array.isArray(data.tags) ? data.tags : (data.tags ? data.tags.split(',').map(t => t.trim()) : []);
-          
-          mainContent.innerHTML = `
+		<link
+			rel="stylesheet"
+			media="(prefers-color-scheme: dark)"
+			href="/pico-prism.css"
+		/>
+
+		<!-- Custom styles -->
+		<link rel="stylesheet" href="/styles.css" />
+
+		<title>
+			<%= it.title ? `${it.title} - tlef.ca` : 'tlef.ca - Personal Blog' %>
+		</title>
+	</head>
+	<body>
+		<div class="site-container">
+			<%~ include('../partials/header', it) %>
+
+			<main><%~ it.body %></main>
+
+			<%~ include('../partials/footer', it) %>
+		</div>
+
+		<!-- SPA Navigation Script -->
+		<script>
+			// Hamburger menu functionality
+			document.addEventListener('DOMContentLoaded', function () {
+				// Remove preload class to enable transitions after page loads
+				setTimeout(() => {
+					document.documentElement.classList.remove('preload');
+				}, 100);
+
+				const navToggle = document.querySelector('.nav-toggle');
+				const siteNav = document.querySelector('.site-nav');
+
+				if (navToggle && siteNav) {
+					navToggle.addEventListener('click', function () {
+						const isExpanded =
+							navToggle.getAttribute('aria-expanded') === 'true';
+
+						navToggle.setAttribute('aria-expanded', !isExpanded);
+						siteNav.classList.toggle('nav-open');
+					});
+
+					// Close menu when clicking on a nav link
+					const navLinks = siteNav.querySelectorAll('a');
+					navLinks.forEach((link) => {
+						link.addEventListener('click', function () {
+							navToggle.setAttribute('aria-expanded', 'false');
+							siteNav.classList.remove('nav-open');
+						});
+					});
+
+					// Close menu when clicking outside
+					document.addEventListener('click', function (e) {
+						if (!navToggle.contains(e.target) && !siteNav.contains(e.target)) {
+							navToggle.setAttribute('aria-expanded', 'false');
+							siteNav.classList.remove('nav-open');
+						}
+					});
+				}
+			});
+
+			// SPA Navigation Logic
+			document.addEventListener('click', function (e) {
+				const link = e.target.closest('a[data-spa-link]');
+				if (link) {
+					e.preventDefault();
+					const url = link.getAttribute('href');
+					loadPage(url);
+				}
+			});
+
+			window.addEventListener('popstate', function () {
+				loadPage(location.pathname);
+			});
+
+			function loadPage(url) {
+				// For post pages, fetch JSON data and render
+				if (url.startsWith('/posts/') && url !== '/posts') {
+					fetch(`/api${url}`)
+						.then((res) => {
+							if (!res.ok) {
+								throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+							}
+							return res.json();
+						})
+						.then((data) => {
+							const mainContent = document.querySelector('main');
+							const formattedDate = data.date
+								? new Date(data.date).toLocaleDateString()
+								: '';
+							const tagsArray = Array.isArray(data.tags)
+								? data.tags
+								: data.tags
+									? data.tags.split(',').map((t) => t.trim())
+									: [];
+
+							mainContent.innerHTML = `
             <div class="content-container">
               <article class="post">
                 <header class="post-header">
@@ -98,7 +135,7 @@
                     ${formattedDate ? `<time datetime="${data.date}">${formattedDate}</time>` : ''}
                     ${data.author ? ` • By ${data.author}` : ''}
                   </div>
-                  ${tagsArray.length ? `<div class="article-tags">${tagsArray.map(tag => `<span class="article-tag">${tag}</span>`).join('')}</div>` : ''}
+                  ${tagsArray.length ? `<div class="article-tags">${tagsArray.map((tag) => `<span class="article-tag">${tag}</span>`).join('')}</div>` : ''}
                 </header>
                 <div class="post-content">
                   ${data.content}
@@ -109,31 +146,52 @@
               </article>
             </div>
           `;
-          document.title = `${data.title || data.slug} - tlef.ca`;
-          window.history.pushState({}, '', url);
-        })
-        .catch(err => {
-          console.error('Failed to load post:', err);
-          window.location.href = url; // Fallback to full page load
-        });
-      } else {
-        // For other pages, do a full page load for now
-        window.location.href = url;
-      }
-    }
+							document.title = `${data.title || data.slug} - tlef.ca`;
+							window.history.pushState({}, '', url);
+						})
+						.catch((err) => {
+							console.error('Failed to load post:', err);
+							window.location.href = url; // Fallback to full page load
+						});
+				} else {
+					// For other pages, do a full page load for now
+					window.location.href = url;
+				}
+			}
 
-    // Theme toggle functionality (future enhancement)
-    function toggleTheme() {
-      const html = document.documentElement;
-      const currentTheme = html.getAttribute('data-theme');
-      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-      html.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-    }
+			// Theme toggle functionality
+			function toggleTheme() {
+				const html = document.documentElement;
+				const currentTheme = html.getAttribute('data-theme');
+				const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+				html.setAttribute('data-theme', newTheme);
+				localStorage.setItem('theme', newTheme);
+			}
 
-    // Load saved theme
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-  </script>
-</body>
+			// Share functionality for posts
+			function shareOnTwitter() {
+				const url = encodeURIComponent(window.location.href);
+				const text = encodeURIComponent(document.title);
+				window.open(
+					`https://twitter.com/intent/tweet?url=${url}&text=${text}`,
+					'_blank',
+				);
+			}
+
+			function shareOnLinkedIn() {
+				const url = encodeURIComponent(window.location.href);
+				window.open(
+					`https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+					'_blank',
+				);
+			}
+
+			function copyToClipboard() {
+				navigator.clipboard.writeText(window.location.href).then(function () {
+					// Could add a toast notification here
+					alert('Link copied to clipboard!');
+				});
+			}
+		</script>
+	</body>
 </html>
