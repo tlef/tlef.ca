@@ -53,13 +53,15 @@
       <div class="sidebar-section">
         <h3 class="sidebar-title">Popular Posts</h3>
         <ul class="sidebar-list">
-          <li><a href="/posts/interactive-guide-to-flexbox" data-spa-link>An Interactive Guide to Flexbox</a></li>
-          <li><a href="/posts/modern-css-reset" data-spa-link>A Modern CSS Reset</a></li>
-          <li><a href="/posts/css-transitions-guide" data-spa-link>CSS Transitions: A Complete Guide</a></li>
-          <li><a href="/posts/center-a-div" data-spa-link>How To Center a Div (Finally!)</a></li>
-          <li><a href="/posts/react-server-components" data-spa-link>Making Sense of React Server Components</a></li>
-          <li><a href="/posts/css-variables-react" data-spa-link>CSS Variables for React Developers</a></li>
-          <li><a href="/posts/why-react-re-renders" data-spa-link>Why React Re-Renders</a></li>
+				<% if (it.popularPosts && it.popularPosts.length) { %>
+					<% it.popularPosts.forEach(function(post) { %>
+						<li>
+							<a href="/posts/<%= post.slug %>" data-spa-link>
+								<%= post.title %>
+							</a>
+						</li>
+					<% }) %>
+				<% } %>
         </ul>
       </div>
 

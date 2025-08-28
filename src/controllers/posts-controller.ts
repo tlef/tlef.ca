@@ -22,6 +22,12 @@ const CATEGORIES = {
 	slack: 'Slack',
 };
 
+const POPULAR_POST_KEYS = [
+	'actions-in-resource-based-api',
+	'a-slack-story',
+	'masters-of-scale',
+];
+
 export class PostsController {
 	private posts: Record<string, IPost>;
 	private orderedKeys: string[];
@@ -83,6 +89,10 @@ export class PostsController {
 
 	getCategories(): { title: string; tag: string; count: number }[] {
 		return this.categoryMeta;
+	}
+
+	getPopularPosts(): IPost[] {
+		return POPULAR_POST_KEYS.map((key) => this.posts[key]).filter(Boolean);
 	}
 
 	getPosts(options: {
