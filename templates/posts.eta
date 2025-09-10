@@ -1,47 +1,52 @@
 <% layout('layouts/base') %>
 
-<div class="content-container">
-  <section class="intro-section">
-    <h1 class="intro-title">Articles and Tutorials</h1>
-    <p class="intro-text">
-      Deep dives into software development, web technologies, and the craft of building great software.
-    </p>
-  </section>
-
-  <section class="content-section">
-    <% if (it.posts && it.posts.length) { %>
-      <div class="articles-grid">
-        <% it.posts.forEach(function(post) { %>
-          <article class="article-card">
-            <h2 class="article-title">
-              <a href="/posts/<%= post.slug %>" data-spa-link><%= post.title || post.slug %></a>
-            </h2>
-            <div class="article-meta">
-              <% if (post.date) { %><time datetime="<%= post.date %>"><%= new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></time><% } %>
-              <% if (post.author) { %> • By <%= post.author %><% } %>
-              <% if (post.readingTime) { %> • <%= post.readingTime %> min read<% } %>
-            </div>
-            <% if (post.summary) { %>
-              <div class="article-summary"><%= post.summary %></div>
-            <% } %>
-            <% if (post.tags) { %>
-              <% let tagsArray = Array.isArray(post.tags) ? post.tags : post.tags.split(','); %>
-              <% if (tagsArray.length > 0) { %>
-                <div class="article-tags">
-                  <% tagsArray.forEach(function(tag) { %>
-                    <a href="/posts?tag=<%= encodeURIComponent(tag.trim()) %>" class="article-tag" data-spa-link><%= tag.trim() %></a>
-                  <% }) %>
-                </div>
-              <% } %>
-            <% } %>
-          </article>
-        <% }) %>
-      </div>
-    <% } else { %>
-      <div style="text-align: center; padding: 3rem 0;">
-        <p style="color: var(--muted-text); font-size: 1.125rem;">No articles available yet.</p>
-        <p><a href="/" data-spa-link>← Back to home</a></p>
-      </div>
-    <% } %>
-  </section>
-</div>
+<section>
+	<div class="blog-container">
+		<form action="/posts" method="get">
+			<div class="search-input-group">
+				<input type="text" name="search" placeholder="Search posts..." required value="<%= it.query || '' %>">
+				<button type="submit">
+					<%~ it.icons['search'] || 'Search' %>
+				</button>
+			</div>
+		</form>
+		<main>
+		<% if (!it.posts || it.posts.length === 0) { %>
+			<% if (it.query) { %>
+				<p>No results for "<%= it.query %>".</p>
+			<% } else { %>
+				<p>No results.</p>
+			<% } %>
+		<% } else { %>
+			<% it.posts.forEach(function(post) { %>
+				<article>
+					<h3><a href="/posts/<%= post.slug %>"><%= post.title %></a></h3>
+					<p><%= post.summary %></p>
+					<% if (Array.isArray(post.tags)) { %>
+						<div class="tags">
+							<% post.tags.forEach(function(tag) { %>
+								<a href="/posts?tag=<%= tag %>"><%= tag %></a>
+							<% }) %>
+						</div>
+					<% } %>
+				</article>	
+			<% }) %>
+		<% } %>
+		</main>
+		<% if (it.pagination && (it.pagination.totalPages > 1)) { %>
+			<nav class="pagination" aria-label="Posts pagination">
+				<% if (it.pagination.hasPrev) { %>
+					<a href="/posts?page=<%= it.pagination.prevPage %><%= it.query ? '&search=' + encodeURIComponent(it.query) : '' %>" aria-label="Previous page">« Previous</a>
+				<% } %>
+				
+				<span class="page-info">
+					Page <%= it.pagination.currentPage %> of <%= it.pagination.totalPages %>
+				</span>
+				
+				<% if (it.pagination.hasNext) { %>
+					<a href="/posts?page=<%= it.pagination.nextPage %><%= it.query ? '&search=' + encodeURIComponent(it.query) : '' %>" aria-label="Next page">Next »</a>
+				<% } %>
+			</nav>
+		<% } %>
+	</div>
+</section>

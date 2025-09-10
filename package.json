@@ -16,6 +16,7 @@
 		"dotenv": "^17.2.1",
 		"eta": "^3.5.0",
 		"gray-matter": "^4.0.3",
+		"jwt-decode": "^4.0.0",
 		"koa": "^3.0.1",
 		"koa-bearer-token": "^2.0.2",
 		"koa-body": "^6.0.1",
@@ -23,7 +24,8 @@
 		"koa-static": "^5.0.0",
 		"marked": "^16.2.0",
 		"prismjs": "^1.30.0",
-		"typescript": "^5.9.2"
+		"typescript": "^5.9.2",
+		"uuid": "^13.0.0"
 	},
 	"devDependencies": {
 		"@types/koa__cors": "^5.0.0",

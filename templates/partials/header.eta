@@ -1,26 +1,22 @@
-<header class="site-header">
-  <div class="header-content">
-    <div class="site-branding">
-      <h1 class="site-title">
-        <a href="/" data-spa-link>tlef.ca</a>
-      </h1>
-    </div>
-    
-    <!-- Hamburger button for mobile -->
-    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
-      <span class="hamburger-line"></span>
-      <span class="hamburger-line"></span>
-      <span class="hamburger-line"></span>
-    </button>
-    
-    <nav class="site-nav">
-      <ul>
-        <li><a href="/" data-spa-link>Home</a></li>
-        <li><a href="/posts" data-spa-link>Articles</a></li>
-        <li><a href="/about" data-spa-link>About</a></li>
-        <li><a href="/contact" data-spa-link>Contact</a></li>
-        <li><button onclick="toggleTheme()" class="theme-toggle" aria-label="Toggle dark mode">🌓</button></li>
-      </ul>
-    </nav>
-  </div>
+<header>
+<nav>
+  <ul>
+    <li><h1>tim lefler</h1>
+		<h3>developer_</h3></li>
+  </ul>
+
+  <ul>
+    <li><a href="/" class="contrast">Home</a></li>
+    <li><a href="/posts" class="contrast">Posts</a></li>
+    <li><a href="/about" class="contrast">About</a></li>
+		<li><a href="http://github.com/tlef"><%~ it.icons['github'] || 'Github' %></a></li>
+		<li><a href="http://linkedin.com/in/tlef"><%~ it.icons['linkedin'] || 'LinkedIn' %></a></li>
+		<li><a href="https://bsky.app/tlef.ca"><%~ it.icons['bluesky'] || 'Bluesky' %></a></li>
+		<li>
+			<button	id="theme-toggle" class="theme-toggle theme-toggle--toggled" type="button" title="Toggle theme" aria-label="Toggle theme" style="color: var(--text-color);">
+				<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="1.5rem" height="1.5rem" fill="currentColor" stroke-linecap="round" class="theme-toggle__classic" viewBox="0 0 32 32"><clipPath id="theme-toggle__classic__cutout"><path d="M0-5h30a1 1 0 0 0 9 13v24H0Z" /></clipPath><g clip-path="url(#theme-toggle__classic__cutout)"><circle cx="16" cy="16" r="9.34" /><g stroke="currentColor" stroke-width="1.5"><path d="M16 5.5v-4" /><path d="M16 30.5v-4" /><path d="M1.5 16h4" /><path d="M26.5 16h4" /><path d="m23.4 8.6 2.8-2.8" /><path d="m5.7 26.3 2.9-2.9" /><path d="m5.8 5.8 2.8 2.8" /><path d="m23.4 23.4 2.9 2.9" /></g></g></svg>
+			</button>
+		</li>
+  </ul>
+</nav>
 </header>

@@ -2,6 +2,7 @@ import { type Context } from 'koa';
 import type Router from 'koa-router';
 import { type IRenderer } from '../libs/renderer/index.js';
 import { PostsController } from '../controllers/posts-controller.js';
+import fs from 'fs';
 
 const POSTS_PER_PAGE = 3;
 const DEFAULT_OFFSET = 0;
@@ -9,15 +10,23 @@ const DEFAULT_OFFSET = 0;
 export class PostPage {
 	protected renderer: IRenderer;
 	protected postsController: PostsController;
+	protected icons: Record<string, string> = {};
 
-	constructor(renderer: IRenderer, postsController: PostsController) {
+	constructor(
+		renderer: IRenderer,
+		icons: Record<string, string>,
+		postsController: PostsController,
+	) {
 		this.renderer = renderer;
+		this.icons = icons;
 		this.postsController = postsController;
 	}
 
 	public registerRoutes(router: Router): void {
 		router.get('/posts', this.getPosts.bind(this));
 		router.get('/posts/:slug', this.getPost.bind(this));
+
+		this.icons['search'] = fs.readFileSync('public/icons/search.svg', 'utf8');
 	}
 
 	private async getPosts(ctx: Context): Promise<void> {
@@ -30,7 +39,11 @@ export class PostPage {
 			tags: typeof tag === 'string' ? tag.split(',') : undefined,
 		});
 
-		ctx.body = this.renderer.render('posts', { posts });
+		ctx.body = this.renderer.render('posts', {
+			posts,
+			query: search,
+			icons: this.icons,
+		});
 	}
 
 	private async getPost(ctx: Context): Promise<void> {
@@ -51,7 +64,7 @@ export class PostPage {
 			ctx.body = post;
 			ctx.type = 'application/json';
 		} else {
-			ctx.body = this.renderer.render('post', post);
+			ctx.body = this.renderer.render('post', { post, icons: this.icons });
 		}
 	}
 }

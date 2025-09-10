@@ -11,6 +11,8 @@ import { PostsApi } from './api/posts.js';
 import { PostPage } from './pages/post.js';
 import { PostsController } from './controllers/posts-controller.js';
 import { AboutPage } from './pages/about.js';
+import { TerminalCommandsApi } from './api/terminal-commands.js';
+import iconsController from './controllers/icons-controller.js';
 
 export class App {
 	protected app: Koa;
@@ -32,18 +34,25 @@ export class App {
 
 		const renderer = new Renderer();
 		const postsController = new PostsController();
+		const icons = iconsController.getIcons();
 
-		const homePage = new HomePage(renderer, postsController);
+		const homePage = new HomePage(renderer, icons, postsController);
 		homePage.registerRoutes(this.router);
 
-		const postPage = new PostPage(renderer, postsController);
+		const postPage = new PostPage(renderer, icons, postsController);
 		postPage.registerRoutes(this.router);
 
-		const aboutPage = new AboutPage(renderer);
+		const aboutPage = new AboutPage(renderer, icons);
 		aboutPage.registerRoutes(this.router);
 
 		const postsApi = new PostsApi(postsController);
-		const apiEndpoints = [...postsApi.getEndpoints()];
+		const terminalCommandsApi = new TerminalCommandsApi();
+		terminalCommandsApi.init();
+
+		const apiEndpoints = [
+			...postsApi.getEndpoints(),
+			...terminalCommandsApi.getEndpoints(),
+		];
 
 		const apiPage = new ApiPage(apiEndpoints);
 		apiPage.registerRoutes(this.router);

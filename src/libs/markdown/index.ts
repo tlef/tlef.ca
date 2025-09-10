@@ -3,9 +3,6 @@ import Prism from 'prismjs';
 
 import matter from 'gray-matter';
 
-// Use require for gray-matter due to module compatibility issues
-// const matter = require('gray-matter');
-
 // Import Prism language components AFTER Prism default import
 import 'prismjs/components/prism-javascript.js';
 import 'prismjs/components/prism-typescript.js';
@@ -21,7 +18,7 @@ import 'prismjs/components/prism-sql.js';
 import 'prismjs/components/prism-python.js';
 import 'prismjs/components/prism-rust.js';
 import 'prismjs/components/prism-go.js';
-// import 'prismjs/components/prism-http.js';
+import 'prismjs/components/prism-http.js';
 
 // Helper function to escape HTML
 function escapeHtml(text: string): string {

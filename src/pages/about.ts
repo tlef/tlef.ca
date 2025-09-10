@@ -4,9 +4,11 @@ import { type IRenderer } from '../libs/renderer/index.js';
 
 export class AboutPage {
 	protected renderer: IRenderer;
+	protected icons: Record<string, string>;
 
-	constructor(renderer: IRenderer) {
+	constructor(renderer: IRenderer, icons: Record<string, string>) {
 		this.renderer = renderer;
+		this.icons = icons;
 	}
 
 	public registerRoutes(router: Router): void {
@@ -14,6 +16,6 @@ export class AboutPage {
 	}
 
 	private async getAbout(ctx: Context): Promise<void> {
-		ctx.body = this.renderer.render('about', {});
+		ctx.body = this.renderer.render('about', { icons: this.icons });
 	}
 }

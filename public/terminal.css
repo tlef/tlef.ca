@@ -1,0 +1,296 @@
+#terminal {
+	width: auto;
+	height: 20rem;
+	max-width: 800px;
+	animation: float 7s ease-in-out infinite;
+}
+
+.terminal-container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+
+	background: var(--pico-code-background-color);
+	border: 1px solid var(--pico-code-border-color);
+	box-shadow: 0 16px 32px -12px rgba(var(--pico-box-shadow));
+	border-radius: 8px;
+	text-align: left;
+}
+
+.terminal-container::-webkit-scrollbar {
+	display: none; /* Chrome/Safari/WebKit */
+}
+
+.terminal-content {
+	font-family:
+		'SFMono-Regular', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New',
+		monospace;
+	padding: 0.5rem;
+	font-size: 0.75rem;
+	color: var(--pico-code-text-color);
+	text-align: left;
+	max-height: calc(100% - 1rem);
+
+	overflow: scroll;
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE/Edge */
+}
+
+.terminal-line {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.terminal-prompt {
+	color: var(--pico-code-text-color);
+	margin-right: 8px;
+	font-weight: bold;
+}
+
+.input-wrapper {
+	position: relative;
+	flex: 1;
+}
+
+.terminal-input {
+	background: transparent;
+	color: var(--pico-code-text-color);
+	border: none;
+	outline: none;
+	font-family: inherit;
+	font-size: 0.75rem;
+	width: 100%;
+	caret-color: transparent; /* Hide the default cursor */
+}
+
+.cursor {
+	position: absolute;
+	top: 0;
+	background-color: var(--pico-color-green-400);
+	width: 0.5rem;
+	height: 1.2em;
+	animation: blink 1s infinite;
+	pointer-events: none;
+	display: none;
+}
+
+.terminal-input:focus + .cursor {
+	display: block;
+}
+
+@keyframes blink {
+	0%,
+	50% {
+		opacity: 1;
+	}
+	51%,
+	100% {
+		opacity: 0;
+	}
+}
+
+/* Alternative block cursor style */
+.cursor.block {
+	width: 0.6em;
+	background-color: rgba(0, 255, 0, 0.7);
+}
+
+/* For demonstration - multiple terminal lines */
+.terminal-history {
+	color: #888;
+	margin-bottom: 5px;
+}
+
+.terminal-container input {
+	padding: 0px;
+	box-shadow: none;
+	margin: 0px;
+	height: 1rem;
+}
+
+.output {
+	color: #57606a;
+	margin-bottom: 8px;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+.terminal-container.dark .output {
+	color: #8b949e;
+}
+
+.error {
+	color: var(--pico-color-red-400);
+}
+
+.terminal-container.dark .error {
+	color: var(--pico-color-red-400);
+}
+
+.success {
+	color: var(--pico-color-green-600);
+}
+
+.terminal-container.dark .success {
+	color: var(--pico-color-green-600);
+}
+
+/* Overlay Background */
+.terminal-overlay-backdrop {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 9999;
+}
+
+.terminal-overlay-backdrop.active {
+	display: block;
+}
+
+/* tests */
+
+@keyframes float {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-14px);
+	}
+}
+
+.terminal-container .title-bar {
+	background: var(--terminal-title-bar-bg);
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	height: 1rem;
+	display: flex;
+	align-items: center;
+	padding: 0 12px;
+	user-select: none;
+}
+
+/* Window Controls */
+.window-controls {
+	display: flex;
+	gap: 8px;
+}
+
+.window-control {
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 50%;
+	border: none;
+	cursor: pointer;
+	transition: opacity 0.2s;
+	padding: 0px;
+}
+
+.window-control:hover {
+	opacity: 0.8;
+}
+
+.close {
+	background: #ff5f56;
+}
+
+.minimize {
+	background: #ffbd2e;
+}
+
+.maximize {
+	background: #27c93f;
+}
+
+/* Title */
+.terminal-title {
+	font-size: 13px;
+	font-weight: 500;
+	width: auto;
+	color: #4a4a4a;
+	text-align: center;
+}
+
+.bb-color-blue {
+	color: var(--terminal-bb-color-blue);
+}
+
+.bb-color-red {
+	color: var(--terminal-bb-color-red);
+}
+
+.bb-color-yellow {
+	color: var(--terminal-bb-color-yellow);
+}
+
+.bb-color-green {
+	color: var(--terminal-bb-color-green);
+}
+
+.bb-color-cyan {
+	color: var(--terminal-bb-color-cyan);
+}
+
+.bb-color-magenta {
+	color: var(--terminal-bb-color-magenta);
+}
+
+.bb-color-white {
+	color: var(--terminal-bb-color-white);
+}
+
+.bb-color-black {
+	color: var(--terminal-bb-color-black);
+}
+
+.bb-color-gray {
+	color: var(--terminal-bb-color-gray);
+}
+
+.bb-color-orange {
+	color: var(--terminal-bb-color-orange);
+}
+
+/* Define the color mappings at the root level */
+:root {
+	--terminal-bb-color-blue: var(--pico-color-blue-600);
+	--terminal-bb-color-red: var(--pico-color-red-600);
+	--terminal-bb-color-yellow: var(--pico-color-yellow-600);
+	--terminal-bb-color-green: var(--pico-color-green-600);
+	--terminal-bb-color-cyan: var(--pico-color-cyan-600);
+	--terminal-bb-color-magenta: var(--pico-color-fuchsia-600);
+	--terminal-bb-color-white: var(--pico-color-slate-200);
+	--terminal-bb-color-black: var(--pico-color-slate-900);
+	--terminal-bb-color-gray: var(--pico-color-slate-500);
+	--terminal-bb-color-orange: var(--pico-color-orange-600);
+
+	--terminal-title-bar-bg: linear-gradient(
+		180deg,
+		var(--pico-color-slate-300) 0%,
+		var(--pico-color-slate-500) 100%
+	);
+}
+
+[data-theme='dark'] {
+	--terminal-bb-color-blue: var(--pico-color-blue-300);
+	--terminal-bb-color-red: var(--pico-color-red-300);
+	--terminal-bb-color-yellow: var(--pico-color-yellow-300);
+	--terminal-bb-color-green: var(--pico-color-green-300);
+	--terminal-bb-color-cyan: var(--pico-color-cyan-300);
+	--terminal-bb-color-magenta: var(--pico-color-fuchsia-300);
+	--terminal-bb-color-white: var(--pico-color-slate-100);
+	--terminal-bb-color-black: var(--pico-color-slate-800);
+	--terminal-bb-color-gray: var(--pico-color-slate-400);
+	--terminal-bb-color-orange: var(--pico-color-orange-300);
+
+	--terminal-title-bar-bg: linear-gradient(
+		180deg,
+		var(--pico-color-slate-600) 0%,
+		var(--pico-color-slate-800) 100%
+	);
+}

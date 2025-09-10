@@ -1,85 +1,42 @@
 <% layout('layouts/base') %>
 
-<div class="site-container">
-  <div class="home-grid">
-    <main class="main-content">
-      <article class="post">
-        <header class="post-header">
-          <h1 class="post-title"><%= it.title || it.slug %></h1>
-          <% if (it.tags && it.tags.length) { %>
-            <div class="post-tags">
-              <% it.tags.forEach(function(tag) { %>
-                <a href="/posts?tag=<%= encodeURIComponent(tag) %>" class="post-tag" data-spa-link><%= tag %></a>
-              <% }) %>
-            </div>
-          <% } %>
-        </header>
-        
-        <div class="post-content">
-          <%~ it.content %>
-        </div>
-        
-        <footer class="post-footer">
-          <p><a href="/posts" data-spa-link class="back-link">← Back to all posts</a></p>
-        </footer>
-      </article>
-    </main>
+<section>
+  <div class="blog-container">
+    <main>
+			<div class="heading">
+				<h1><%= it.post.title || it.post.slug %></h1>
+				<% if (it.post.date) { %>
+					<p>
+						<time datetime="<%= it.post.date.toISOString() %>">
+							<%= it.post.date.toLocaleDateString() %>
+						</time>
+					</p>
+				<% } %>
+				<% if (Array.isArray(it.post.tags) && it.post.tags.length) { %>
+					<div class="tags">
+						<% it.post.tags.forEach(function(tag) { %>
+							<a href="/category/<%= tag %>"><%= tag %></a>
+						<% }) %>
+					</div>
+				<% } %>
+			</div>
+			<div class="icon-demo"></div>
+			<%~ it.post.content %>
+		</main>
+		<% if (it.post.author && it.post.author === 'tlef') { %>
+			<section style="margin-top: 5rem;">
+				<hr>
+				<div class="grid" style="grid-template-columns: 1fr 3fr;">
+					<img src="/avatar.jpg" alt="Tim Lefler's Avatar" class="author-avatar">
+					<div>
+						<h4>Written by Tim Lefler</h4>
 
-    <!-- Post sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-section">
-        <h3 class="sidebar-title">Share This Post</h3>
-        <div class="share-buttons">
-          <button onclick="shareOnTwitter()" class="share-button">
-            📱 Twitter
-          </button>
-          <button onclick="shareOnLinkedIn()" class="share-button">
-            💼 LinkedIn
-          </button>
-          <button onclick="copyToClipboard()" class="share-button">
-            🔗 Copy Link
-          </button>
-        </div>
-      </div>
+						Dolor, exercitation et esse lorem tempor ullamco sed. Esse lorem tempor ullamco sed veniam, sunt. Ullamco sed veniam, sunt ullamco do duis. Sunt ullamco do duis magna. Do duis magna et laborum lorem adipiscing consequat.<br><br>
 
-      <% if (it.tags && it.tags.length) { %>
-      <div class="sidebar-section">
-        <h3 class="sidebar-title">Tags</h3>
-        <div class="sidebar-tags">
-          <% it.tags.forEach(function(tag) { %>
-            <a href="/posts?tag=<%= encodeURIComponent(tag) %>" class="sidebar-tag" data-spa-link><%= tag %></a>
-          <% }) %>
-        </div>
-				<mark>foo</mark>
-      </div>
-			
-      <% } %>
-
-      <div class="sidebar-section">
-        <h3 class="sidebar-title">Related Posts</h3>
-        <ul class="sidebar-list">
-          <li><a href="/posts/interactive-guide-to-flexbox" data-spa-link>An Interactive Guide to Flexbox</a></li>
-          <li><a href="/posts/modern-css-reset" data-spa-link>A Modern CSS Reset</a></li>
-          <li><a href="/posts/css-transitions-guide" data-spa-link>CSS Transitions: A Complete Guide</a></li>
-          <li><a href="/posts/center-a-div" data-spa-link>How To Center a Div (Finally!)</a></li>
-        </ul>
-      </div>
-
-      <div class="sidebar-section">
-        <h3 class="sidebar-title">About the Author</h3>
-        <p style="color: var(--muted-text); line-height: 1.6; font-size: 0.925rem;">
-          Hi, I'm Tim. I write about software development, web technologies, and building great user experiences. 
-          <a href="/about" data-spa-link style="color: var(--accent-color);">Learn more →</a>
-        </p>
-      </div>
-
-      <div class="sidebar-section">
-        <h3 class="sidebar-title">Subscribe</h3>
-        <p style="color: var(--muted-text); line-height: 1.6; font-size: 0.925rem;">
-          Get notified when I publish new articles about software development and web technologies.
-        </p>
-        <a href="/subscribe" data-spa-link class="subscribe-button">Subscribe →</a>
-      </div>
-    </aside>
+						<a href="/about">Learn more</a>
+					</div>
+				</div>
+			</section>
+		<% } %>
   </div>
-</div>
+</section>

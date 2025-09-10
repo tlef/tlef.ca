@@ -2,6 +2,7 @@
 .env
 node_modules
 out
+public/js
 
 .DS_Store
 

@@ -6,10 +6,16 @@ import { PostsController } from '../controllers/posts-controller.js';
 export class HomePage {
 	protected renderer: IRenderer;
 	protected postsController: PostsController;
+	protected icons: Record<string, string> = {};
 
-	constructor(renderer: IRenderer, postsController: PostsController) {
+	constructor(
+		renderer: IRenderer,
+		icons: Record<string, string>,
+		postsController: PostsController,
+	) {
 		this.renderer = renderer;
 		this.postsController = postsController;
+		this.icons = icons;
 	}
 
 	public registerRoutes(router: Router): void {
@@ -17,14 +23,15 @@ export class HomePage {
 	}
 
 	private async getHome(ctx: Context): Promise<void> {
-		const posts = this.postsController.getPosts({ limit: 2 });
+		const posts = this.postsController.getPosts({ limit: 5 });
 		const categories = this.postsController.getCategories();
 		const popularPosts = this.postsController.getPopularPosts();
+
 		ctx.body = this.renderer.render('home', {
-			name: 'user',
 			posts,
 			categories,
 			popularPosts,
+			icons: this.icons,
 		});
 	}
 }

@@ -1,118 +1,188 @@
-/* Custom PrismJS Theme using PicoCSS colors */
+/**
+ * PrismJS Theme for Pico CSS
+ * Uses Pico's native CSS variables for seamless light/dark mode integration
+ * 
+ * Usage: Include this CSS after both Pico CSS and PrismJS core CSS
+ */
 
-/* Base styles - transparent backgrounds, inherit text */
+/* Define syntax highlighting colors using Pico variables */
+:root {
+	/* Light theme syntax colors */
+	--prism-bg: var(--pico-code-background-color);
+	--prism-text: var(--pico-color);
+	--prism-border: var(--pico-code-border-color);
+	--prism-shadow: var(--pico-card-box-shadow);
+
+	/* Syntax element colors - light theme */
+	--prism-comment: var(--pico-muted-color, #6c757d);
+	--prism-punctuation: var(--pico-color);
+	--prism-string: var(--pico-primary);
+	--prism-number: #d63384;
+	--prism-keyword: #6f42c1;
+	--prism-function: #d63384;
+	--prism-class: #fd7e14;
+	--prism-operator: var(--pico-color);
+	--prism-regex: #20c997;
+	--prism-important: #dc3545;
+	--prism-variable: #6f42c1;
+	--prism-property: #0d6efd;
+	--prism-selector: var(--pico-primary);
+}
+
+/* Dark theme overrides */
+[data-theme='dark'] {
+	--prism-comment: var(--pico-muted-color, #adb5bd);
+	--prism-string: var(--pico-primary);
+	--prism-number: #f8629b;
+	--prism-keyword: #a78bfa;
+	--prism-function: #f8629b;
+	--prism-class: #fbbf24;
+	--prism-operator: var(--pico-color);
+	--prism-regex: #34d399;
+	--prism-important: #f87171;
+	--prism-variable: #a78bfa;
+	--prism-property: #60a5fa;
+	--prism-selector: var(--pico-primary);
+}
+
+/* Auto dark theme (for users who haven't manually set theme) */
+@media only screen and (prefers-color-scheme: dark) {
+	:root:not([data-theme]) {
+		--prism-comment: var(--pico-muted-color, #adb5bd);
+		--prism-string: var(--pico-primary);
+		--prism-number: #f8629b;
+		--prism-keyword: #a78bfa;
+		--prism-function: #f8629b;
+		--prism-class: #fbbf24;
+		--prism-operator: var(--pico-color);
+		--prism-regex: #34d399;
+		--prism-important: #f87171;
+		--prism-variable: #a78bfa;
+		--prism-property: #60a5fa;
+		--prism-selector: var(--pico-primary);
+	}
+}
+
+/* Base code block styling */
 code[class*='language-'],
 pre[class*='language-'] {
-	color: var(--pico-color); /* Inherit text color from PicoCSS */
-	background: transparent; /* Transparent background */
-	font-family: var(--pico-font-family-monospace, 'Courier New', monospace);
+	color: var(--prism-text);
+	background: transparent;
+	text-shadow: none;
+	font-family: var(
+		--pico-font-family-monospace,
+		'SFMono-Regular',
+		'Monaco',
+		'Consolas',
+		'Liberation Mono',
+		'Courier New',
+		monospace
+	);
 	font-size: 0.875em;
+	line-height: 1.5;
+	direction: ltr;
 	text-align: left;
 	white-space: pre;
 	word-spacing: normal;
 	word-break: normal;
 	word-wrap: normal;
-	line-height: 1.5;
 	tab-size: 4;
 	hyphens: none;
 }
 
 /* Code blocks */
 pre[class*='language-'] {
-	padding: var(--pico-spacing);
-	margin: var(--pico-spacing) 0;
-	overflow: auto;
-	background: var(
-		--pico-card-background-color
-	); /* Use PicoCSS card background */
-	border: 1px solid var(--pico-muted-border-color);
+	position: relative;
+	margin: 1rem 0;
+	padding: 1rem;
+	background: var(--prism-bg);
+	border: 1px solid var(--prism-border);
 	border-radius: var(--pico-border-radius);
+	overflow: auto;
+	box-shadow: var(--prism-shadow);
+}
+
+pre[class*='language-']:hover {
+	box-shadow: var(--pico-card-box-shadow-hover, var(--prism-shadow));
 }
 
 /* Inline code */
 :not(pre) > code[class*='language-'] {
 	padding: 0.2em 0.4em;
+	background: var(--prism-bg);
+	border: 1px solid var(--prism-border);
 	border-radius: var(--pico-border-radius);
-	background: var(--pico-code-background-color);
-	color: var(--pico-code-color);
+	white-space: normal;
 }
 
-/* Syntax highlighting using PicoCSS color palette */
-
-/* Comments */
+/* Token styles */
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-	color: var(--pico-muted-color);
+	color: var(--prism-comment);
 	font-style: italic;
 }
 
-/* Punctuation */
 .token.punctuation {
-	color: var(--pico-color);
+	color: var(--prism-punctuation);
+}
+
+.token.namespace {
 	opacity: 0.7;
 }
 
-/* Properties, tags, boolean, number, constant, symbol, deleted */
 .token.property,
 .token.tag,
-.token.boolean,
-.token.number,
 .token.constant,
 .token.symbol,
 .token.deleted {
-	color: var(--pico-primary-500, #1976d2); /* Blue - primary color */
+	color: var(--prism-property);
 }
 
-/* Selectors, attr-names, strings, chars, built-ins, inserted */
+.token.boolean,
+.token.number {
+	color: var(--prism-number);
+	font-weight: 500;
+}
+
 .token.selector,
 .token.attr-name,
 .token.string,
 .token.char,
 .token.builtin,
 .token.inserted {
-	color: var(--pico-green-500, #388e3c); /* Green */
+	color: var(--prism-string);
 }
 
-/* Operators, entities, urls */
 .token.operator,
 .token.entity,
 .token.url,
 .language-css .token.string,
 .style .token.string {
-	color: var(--pico-amber-600, #ffb300); /* Amber/Orange */
+	color: var(--prism-operator);
 }
 
-/* Keywords, at-rules, important */
-.token.keyword,
 .token.atrule,
-.token.important {
-	color: var(--pico-purple-500, #7b1fa2); /* Purple */
+.token.attr-value,
+.token.keyword {
+	color: var(--prism-keyword);
 	font-weight: 600;
 }
 
-/* Functions */
 .token.function,
 .token.class-name {
-	color: var(--pico-cyan-600, #00acc1); /* Cyan */
+	color: var(--prism-function);
+	font-weight: 500;
 }
 
-/* Variables */
+.token.regex,
+.token.important,
 .token.variable {
-	color: var(--pico-red-500, #d32f2f); /* Red */
+	color: var(--prism-variable);
 }
 
-/* Regex, important */
-.token.regex {
-	color: var(--pico-orange-500, #f57c00); /* Orange */
-}
-
-.token.important {
-	font-weight: bold;
-}
-
-/* Special tokens */
+.token.important,
 .token.bold {
 	font-weight: bold;
 }
@@ -125,69 +195,106 @@ pre[class*='language-'] {
 	cursor: help;
 }
 
-/* Line highlighting (if using line-highlight plugin) */
-.line-highlight {
-	background: var(--pico-primary-100, rgba(25, 118, 210, 0.1));
-	background: linear-gradient(
-		to right,
-		var(--pico-primary-100, rgba(25, 118, 210, 0.1)) 70%,
-		transparent
-	);
+/* Language-specific adjustments */
+.language-json .token.property {
+	color: var(--prism-string);
 }
 
-/* Line numbers (if using line-numbers plugin) */
+.language-markdown .token.title {
+	color: var(--prism-keyword);
+	font-weight: bold;
+}
+
+.language-markdown .token.code {
+	color: var(--prism-string);
+}
+
+/* Line highlighting plugin support */
+.line-highlight {
+	background: var(--pico-primary-background);
+	background: linear-gradient(
+		to right,
+		var(--pico-primary-background) 70%,
+		transparent
+	);
+	opacity: 0.1;
+}
+
+.line-highlight:before,
+.line-highlight[data-end]:after {
+	background-color: var(--pico-primary);
+	color: var(--pico-primary-inverse);
+}
+
+/* Line numbers plugin support */
 .line-numbers .line-numbers-rows {
-	border-right: 1px solid var(--pico-muted-border-color);
+	border-right: 1px solid var(--prism-border);
 }
 
 .line-numbers-rows > span:before {
-	color: var(--pico-muted-color);
+	color: var(--prism-comment);
 }
 
-/* Fallback colors for older browsers or when CSS custom properties aren't available */
-@supports not (color: var(--pico-color)) {
-	.token.property,
-	.token.tag,
-	.token.boolean,
-	.token.number,
-	.token.constant,
-	.token.symbol,
-	.token.deleted {
-		color: #1976d2; /* Blue */
+/* Copy button plugin support */
+div.code-toolbar > .toolbar {
+	opacity: 0.8;
+}
+
+div.code-toolbar:hover > .toolbar {
+	opacity: 1;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > button,
+div.code-toolbar > .toolbar > .toolbar-item > a,
+div.code-toolbar > .toolbar > .toolbar-item > span {
+	background: var(--pico-secondary-background);
+	color: var(--pico-secondary-inverse);
+	border: 1px solid var(--pico-secondary-border);
+	border-radius: var(--pico-border-radius);
+	padding: 0.25rem 0.5rem;
+	font-size: 0.75rem;
+	transition: all 0.2s ease;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > button:hover,
+div.code-toolbar > .toolbar > .toolbar-item > a:hover {
+	background: var(--pico-secondary-hover-background);
+	color: var(--pico-secondary-inverse);
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+	pre[class*='language-'],
+	:not(pre) > code[class*='language-'],
+	.line-highlight {
+		transition: none;
+	}
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+	code[class*='language-'],
+	pre[class*='language-'] {
+		--prism-border: var(--pico-color);
 	}
 
-	.token.selector,
-	.token.attr-name,
+	pre[class*='language-'] {
+		border-width: 2px;
+	}
+}
+
+/* Print styles */
+@media print {
+	code[class*='language-'],
+	pre[class*='language-'] {
+		text-shadow: none;
+		background: white !important;
+		color: black !important;
+	}
+
 	.token.string,
-	.token.char,
-	.token.builtin,
-	.token.inserted {
-		color: #388e3c; /* Green */
-	}
-
-	.token.operator,
-	.token.entity,
-	.token.url,
-	.language-css .token.string,
-	.style .token.string {
-		color: #ffb300; /* Amber */
-	}
-
 	.token.keyword,
-	.token.atrule {
-		color: #7b1fa2; /* Purple */
-	}
-
-	.token.function,
-	.token.class-name {
-		color: #00acc1; /* Cyan */
-	}
-
-	.token.variable {
-		color: #d32f2f; /* Red */
-	}
-
-	.token.regex {
-		color: #f57c00; /* Orange */
+	.token.function {
+		color: black !important;
 	}
 }

@@ -1,77 +1,70 @@
 <% layout('layouts/base') %>
 
-<div class="site-container">
-  <div class="home-grid">
-    <main class="main-content">
-      <section>
-        <h2 class="main-section-header">Latest Articles</h2>
-        
-					<div class="featured-posts">
-						<% if (it.posts && it.posts.length) { %>
-							<% it.posts.forEach(function(post) { %>
-								<article class="featured-post">
-									<h3 class="featured-post-title">
-									<a href="/posts/<%= post.slug %>" data-spa-link><%= post.title || post.slug %></a>
-									</h3>
-									<% if (post.summary) { %>
-									<div class="featured-post-excerpt"><%= post.summary %></div>
-									<% } else { %>
-									<div class="featured-post-excerpt">An insightful article about software development, web technologies, and building great applications. Click to read the full post and learn something new.</div>
-									<% } %>
-									<a href="/posts/<%= post.slug %>" data-spa-link class="read-more-link">Read more</a>
-								</article>
-							<% }) %>
-						<% } else { %>
-							<div class="featured-post-excerpt">No articles found.</div>
-						<% } %>
+<section class="home-container">
+  <main>
+		<section class="hero grid" style="grid-template-columns: 8fr 6fr;">
+			<div>
+				<h1>Hello, my name is Tim and I build things on the internet.</h1>
+				<% /* <div class="profile-pill" style="margin-top: 5rem;">
+						<div class="profile-pill-avatar">
+								<img src="avatar.jpg" alt="Profile">
 						</div>
-						
-						<p style="text-align: left; margin-top: 2rem;">
-						<a href="/posts" data-spa-link style="font-weight: 600; color: var(--accent-color);">View all articles →</a>
-						</p>
-          
-      </section>
-    </main>
+						<div class="profile-pill-info">
+							<div class="profile-pill-name">Tim Lefler</div>
+							<div class="profile-pill-status">Software Developer</div>
+						</div>
+				</div> */ %>
+			</div>
+			<div id="terminal"></div>
+		</section>
 
-    <!-- Sidebar column (1/3) -->
-    <aside class="sidebar">
-      <div class="sidebar-section">
-        <h3 class="sidebar-title">Categories</h3>
-        <ul class="sidebar-list">
-				<% if (it.categories && it.categories.length) { %>
-					<% it.categories.forEach(function(category) { %>
-						<li>
-							<a href="/posts?tag=<%= category.tag %>" data-spa-link>
-								<%= category.title %> <span class="category-count">(<%= category.count %>)</span>
-							</a>
-						</li>
-					<% }) %>
-				<% } %>
-        </ul>
-      </div>
-
-      <div class="sidebar-section">
-        <h3 class="sidebar-title">Popular Posts</h3>
-        <ul class="sidebar-list">
-				<% if (it.popularPosts && it.popularPosts.length) { %>
-					<% it.popularPosts.forEach(function(post) { %>
-						<li>
-							<a href="/posts/<%= post.slug %>" data-spa-link>
-								<%= post.title %>
-							</a>
-						</li>
-					<% }) %>
-				<% } %>
-        </ul>
-      </div>
-
-      <div class="sidebar-section">
-        <h3 class="sidebar-title">About</h3>
-        <p style="color: var(--muted-text); line-height: 1.6; font-size: 0.925rem;">
-          Hi, I'm Tim. I write about software development, web technologies, and building great user experiences. 
-          <a href="/about" data-spa-link style="color: var(--accent-color);">Learn more →</a>
-        </p>
-      </div>
-    </aside>
-  </div>
-</div>
+    <div class="terminal-overlay-backdrop" id="terminal-backdrop"></div>
+		<h1>Latest Posts</h1>
+		<div class="grid">
+			<div>
+			<% it.posts.forEach(function(post) { %>
+					<article>
+						<h4><a href="/posts/<%= post.slug %>"><%= post.title %></a></h4>
+						<p><%= post.summary %></p>
+						<% /* <% if (Array.isArray(post.tags)) { %>
+							<div class="tags">
+								<% post.tags.forEach(function(tag) { %>
+									<a href="/posts?tag=<%= tag %>"><%= tag %></a>
+								<% }) %>
+							</div>
+						<% } %> */ %>
+					</article>
+			<% }) %>
+				<div>
+					<a href="/posts">Read more...</a>
+				</div>
+			</div>
+			<div class="sidebar">
+				<form action="/posts" method="get">
+					<div class="search-input-group">
+						<input type="text" name="search" placeholder="Search posts..." required>
+						<button type="submit">
+							<%~ it.icons['search'] || 'Search' %>
+						</button>
+					</div>
+				</form>
+				<h3>Categories</h3>
+				<div class="category-list">
+					<ul>
+						<% it.categories.forEach(function(category) { %>
+							<li><a href="/posts?search=<%= category.tag %>"><%= category.title %></a></li>
+						<% }) %>
+					</ul>
+				</div>
+				<h3>Popular Posts</h3>
+				<div class="category-list">
+					<ul>
+						<% it.popularPosts.forEach(function(post) { %>
+							<li><a href="/posts/<%= post.slug %>"><%= post.title %></a></li>
+						<% }) %>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</main>
+</section>

@@ -1,197 +1,194 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta
-			name="description"
-			content="<%= it.description || 'Personal blog and thoughts on technology, software development, and life' %>"
-		/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+		
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.indigo.min.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css">
+		<link rel="stylesheet" href="/style.css">
+		<link rel="stylesheet" href="/pico-prism.css">
+		<link rel="stylesheet" href="/terminal.css">
+		<link rel="stylesheet" href="/profile-pill.css">
 
-		<!-- Load theme immediately to prevent flash -->
-		<script>
-			// Load theme before CSS to prevent flash
-			const savedTheme = localStorage.getItem('theme') || 'light';
-			document.documentElement.setAttribute('data-theme', savedTheme);
-
-			// Add preload class to prevent transitions during initial load
-			document.documentElement.classList.add('preload');
-		</script>
-
-		<!-- Favicon -->
-		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-
-		<!-- Pico CSS - Load directly to prevent FOUC -->
-		<link
-			rel="stylesheet"
-			href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
-		/>
-
-		<link
-			rel="stylesheet"
-			media="(prefers-color-scheme: dark)"
-			href="/pico-prism.css"
-		/>
-
-		<!-- Custom styles -->
-		<link rel="stylesheet" href="/styles.css" />
-
-		<title>
-			<%= it.title ? `${it.title} - tlef.ca` : 'tlef.ca - Personal Blog' %>
-		</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/theme-toggles@4.10.1/css/classic.min.css">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Figtree&display=swap" rel="stylesheet">
+<% /* <link href="https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap" rel="stylesheet"> */ %>
+		<title>Tmp</title>
 	</head>
-	<body>
-		<div class="site-container">
-			<%~ include('../partials/header', it) %>
+	<body class="container">
+		<%~ include('../partials/header', it) %>
+		<%~ it.body %> 
+		<%~ include('../partials/footer', it) %>
+		<script src="/theme-toggle.js"></script>
+		<script src="/js/terminal.js"></script>
+<script src="https://unpkg.com/typify.js@1.1.9/dist/typify.min.js"></script>
 
-			<main><%~ it.body %></main>
-
-			<%~ include('../partials/footer', it) %>
-		</div>
-
-		<!-- SPA Navigation Script -->
 		<script>
-			// Hamburger menu functionality
-			document.addEventListener('DOMContentLoaded', function () {
-				// Remove preload class to enable transitions after page loads
-				setTimeout(() => {
-					document.documentElement.classList.remove('preload');
-				}, 100);
+// Lightweight copy-to-clipboard for server-side highlighted code
+// No PrismJS JavaScript needed!
 
-				const navToggle = document.querySelector('.nav-toggle');
-				const siteNav = document.querySelector('.site-nav');
+document.addEventListener('DOMContentLoaded', function() {
+    addCopyButtons();
+});
 
-				if (navToggle && siteNav) {
-					navToggle.addEventListener('click', function () {
-						const isExpanded =
-							navToggle.getAttribute('aria-expanded') === 'true';
+function addCopyButtons() {
+    // Find all pre elements with language classes (server-side highlighted)
+    const codeBlocks = document.querySelectorAll('pre[class*="language-"], pre code[class*="language-"]');
+    
+    codeBlocks.forEach(element => {
+        // Get the pre element (whether it's the pre itself or the parent of code)
+        const pre = element.tagName === 'PRE' ? element : element.closest('pre');
+        
+        // Skip if already has a copy button
+        if (pre.querySelector('.copy-btn')) return;
+        
+        // Create and add copy button
+        const copyButton = createCopyButton();
+        
+        // Position the pre relatively so button can be absolute
+        pre.style.position = 'relative';
+        
+        // Add click handler
+        copyButton.addEventListener('click', () => copyCode(pre, copyButton));
+        
+        // Add button to pre
+        pre.appendChild(copyButton);
+    });
+}
 
-						navToggle.setAttribute('aria-expanded', !isExpanded);
-						siteNav.classList.toggle('nav-open');
-					});
+function createCopyButton() {
+    const button = document.createElement('button');
+    button.className = 'copy-btn';
+    button.setAttribute('aria-label', 'Copy code to clipboard');
+    button.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="m5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+    `;
+    return button;
+}
 
-					// Close menu when clicking on a nav link
-					const navLinks = siteNav.querySelectorAll('a');
-					navLinks.forEach((link) => {
-						link.addEventListener('click', function () {
-							navToggle.setAttribute('aria-expanded', 'false');
-							siteNav.classList.remove('nav-open');
-						});
-					});
+async function copyCode(pre, button) {
+    const code = pre.innerText;
+    try {
+        // Modern clipboard API
+        await navigator.clipboard.writeText(code);
+        showSuccess(button);
+    } catch (err) {
+        // Fallback for older browsers
+        if (fallbackCopy(code)) {
+            showSuccess(button);
+        } else {
+            showError(button);
+        }
+    }
+}
 
-					// Close menu when clicking outside
-					document.addEventListener('click', function (e) {
-						if (!navToggle.contains(e.target) && !siteNav.contains(e.target)) {
-							navToggle.setAttribute('aria-expanded', 'false');
-							siteNav.classList.remove('nav-open');
-						}
-					});
-				}
-			});
+function fallbackCopy(text) {
+    try {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.cssText = 'position:fixed;top:-999px;left:-999px;opacity:0;';
+        document.body.appendChild(textarea);
+        textarea.select();
+        const success = document.execCommand('copy');
+        document.body.removeChild(textarea);
+        return success;
+    } catch (err) {
+        return false;
+    }
+}
 
-			// SPA Navigation Logic
-			document.addEventListener('click', function (e) {
-				const link = e.target.closest('a[data-spa-link]');
-				if (link) {
-					e.preventDefault();
-					const url = link.getAttribute('href');
-					loadPage(url);
-				}
-			});
+function showSuccess(button) {
+    const originalHTML = button.innerHTML;
+    
+    // Show checkmark
+    button.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20,6 9,17 4,12"></polyline>
+        </svg>
+    `;
 
-			window.addEventListener('popstate', function () {
-				loadPage(location.pathname);
-			});
+    
+    button.classList.add('copy-success');
+    
+    // Reset after 2 seconds
+    setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.classList.remove('copy-success');
+    }, 2000);
+}
 
-			function loadPage(url) {
-				// For post pages, fetch JSON data and render
-				if (url.startsWith('/posts/') && url !== '/posts') {
-					fetch(`/api${url}`)
-						.then((res) => {
-							if (!res.ok) {
-								throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-							}
-							return res.json();
-						})
-						.then((data) => {
-							const mainContent = document.querySelector('main');
-							const formattedDate = data.date
-								? new Date(data.date).toLocaleDateString()
-								: '';
-							const tagsArray = Array.isArray(data.tags)
-								? data.tags
-								: data.tags
-									? data.tags.split(',').map((t) => t.trim())
-									: [];
+function showError(button) {
+    const originalHTML = button.innerHTML;
+    
+    // Show error X
+    button.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+    `;
+    
+    button.classList.add('copy-error');
+    
+    // Reset after 2 seconds
+    setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.classList.remove('copy-error');
+    }, 2000);
+}		</script>
 
-							mainContent.innerHTML = `
-            <div class="content-container">
-              <article class="post">
-                <header class="post-header">
-                  <h1>${data.title || data.slug}</h1>
-                  <div class="article-meta">
-                    ${formattedDate ? `<time datetime="${data.date}">${formattedDate}</time>` : ''}
-                    ${data.author ? ` • By ${data.author}` : ''}
-                  </div>
-                  ${tagsArray.length ? `<div class="article-tags">${tagsArray.map((tag) => `<span class="article-tag">${tag}</span>`).join('')}</div>` : ''}
-                </header>
-                <div class="post-content">
-                  ${data.content}
-                </div>
-                <footer class="post-footer">
-                  <p><a href="/posts" data-spa-link>← Back to all posts</a></p>
-                </footer>
-              </article>
-            </div>
-          `;
-							document.title = `${data.title || data.slug} - tlef.ca`;
-							window.history.pushState({}, '', url);
-						})
-						.catch((err) => {
-							console.error('Failed to load post:', err);
-							window.location.href = url; // Fallback to full page load
-						});
-				} else {
-					// For other pages, do a full page load for now
-					window.location.href = url;
-				}
-			}
 
-			// Theme toggle functionality
-			function toggleTheme() {
-				const html = document.documentElement;
-				const currentTheme = html.getAttribute('data-theme');
-				const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-				html.setAttribute('data-theme', newTheme);
-				localStorage.setItem('theme', newTheme);
-			}
+    <script>
+        const input = document.querySelector('.terminal-input');
+        const cursor = document.getElementById('cursor');
 
-			// Share functionality for posts
-			function shareOnTwitter() {
-				const url = encodeURIComponent(window.location.href);
-				const text = encodeURIComponent(document.title);
-				window.open(
-					`https://twitter.com/intent/tweet?url=${url}&text=${text}`,
-					'_blank',
-				);
-			}
+        function updateCursorPosition() {
+            const cursorPosition = input.selectionStart;
+            
+            // Get text up to cursor position
+            const textBeforeCursor = input.value.substring(0, cursorPosition);
+            
+            // Create a temporary span to measure text width
+            const temp = document.createElement('span');
+            temp.style.visibility = 'hidden';
+            temp.style.position = 'absolute';
+            temp.style.font = window.getComputedStyle(input).font;
+            temp.style.whiteSpace = 'pre'; // Preserve spaces
+            temp.textContent = textBeforeCursor;
+            document.body.appendChild(temp);
+            
+            const textWidth = temp.offsetWidth;
+            cursor.style.left = textWidth + 'px';
+            
+            document.body.removeChild(temp);
+        }
 
-			function shareOnLinkedIn() {
-				const url = encodeURIComponent(window.location.href);
-				window.open(
-					`https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
-					'_blank',
-				);
-			}
+        // Update cursor position on various events
+        input.addEventListener('input', updateCursorPosition);
+        input.addEventListener('keyup', updateCursorPosition);
+        input.addEventListener('keydown', updateCursorPosition);
+        input.addEventListener('click', updateCursorPosition);
+        input.addEventListener('focus', updateCursorPosition);
+        input.addEventListener('blur', updateCursorPosition);
+        
+        // Handle selection changes (like when using Shift+Arrow keys)
+        input.addEventListener('selectionchange', updateCursorPosition);
 
-			function copyToClipboard() {
-				navigator.clipboard.writeText(window.location.href).then(function () {
-					// Could add a toast notification here
-					alert('Link copied to clipboard!');
-				});
-			}
-		</script>
+        // Focus the input when clicking anywhere in the terminal
+        document.querySelector('.terminal-container').addEventListener('click', () => {
+            input.focus();
+        });
+
+        // Initial cursor position
+        updateCursorPosition();
+    </script>
 	</body>
 </html>
