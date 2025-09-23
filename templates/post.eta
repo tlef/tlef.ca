@@ -8,19 +8,27 @@
 				<% if (it.post.date) { %>
 					<p>
 						<time datetime="<%= it.post.date.toISOString() %>">
-							<%= it.post.date.toLocaleDateString() %>
+							<%= new Date(it.post.date).toLocaleDateString(it.locale, { 
+								year: 'numeric', 
+								month: 'short', 
+								day: 'numeric' 
+							}) %>
 						</time>
 					</p>
 				<% } %>
-				<% if (Array.isArray(it.post.tags) && it.post.tags.length) { %>
+				<% /* <% if (Array.isArray(it.post.tags) && it.post.tags.length) { %>
 					<div class="tags">
 						<% it.post.tags.forEach(function(tag) { %>
 							<a href="/category/<%= tag %>"><%= tag %></a>
 						<% }) %>
 					</div>
-				<% } %>
+				<% } %> */ %>
+			<% if (it.post.note) { %>
+				<div class="blog-note">
+					<p><%~ it.post.note %></p>
+				</div>
+			<% } %>
 			</div>
-			<div class="icon-demo"></div>
 			<%~ it.post.content %>
 		</main>
 		<% if (it.post.author && it.post.author === 'tlef') { %>

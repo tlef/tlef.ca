@@ -1,30 +1,17 @@
 :root {
 	--pico-card-border-color: rgb(28, 33, 44);
-	font-size: 18px;
+	/* font-size: 18px; */
+	--pico-muted-hover-color: var(--pico-h1-color);
 }
 
 :root[data-theme='light'] {
 	--pico-code-background-color: var(--pico-color-slate-50);
 	--pico-code-border-color: var(--pico-color-slate-100);
-	--pico-mark-gradient: linear-gradient(
-		to right,
-		rgb(99.45, 102.6, 241.9),
-		rgb(147.6, 51, 234),
-		rgb(194.7, 38.25, 215.55),
-		rgb(240.75, 45.9, 188.7)
-	);
 }
 
 :root[data-theme='dark'] {
 	--pico-code-background-color: var(--pico-color-slate-900);
 	--pico-code-border-color: var(--pico-color-slate-850);
-	--pico-mark-gradient: linear-gradient(
-		to right,
-		rgb(215.4, 140.8, 210.2),
-		rgb(184.5, 153, 237.75),
-		rgb(156.6, 165.3, 232.6),
-		rgb(142.75, 168.95, 240.05)
-	);
 }
 
 h1,
@@ -53,23 +40,88 @@ header nav h3 {
 	text-align: right;
 }
 
+header nav svg {
+	height: 1rem;
+	width: 1rem;
+}
+
+header nav a:hover,
+header nav svg:hover {
+	color: var(--pico-muted-hover-color);
+}
+
+header nav .spacer {
+	border-left: 2px solid var(--pico-muted-border-color);
+	margin: 0.5rem;
+	padding: 0px;
+}
+
 #theme-toggle {
 	padding: 0px;
 }
 
 .hero {
-	background-size: 52px 60px !important;
-	background-repeat: repeat !important;
-	background-position: 0 0 !important;
 	align-items: center;
 	justify-content: center;
+	min-height: 20rem;
+	text-align: center;
+	gap: 4rem;
+	margin-bottom: 4rem;
+}
+
+@media (max-width: 1540px) {
+	.hero h1 {
+		padding: 0rem !important;
+	}
+}
+
+@media (max-width: 1024px) {
+	.hero {
+		grid-template-columns: 1fr !important;
+	}
+
+	.hero h1 {
+		font-size: 2.5rem !important;
+		margin-top: 3rem !important;
+		margin-bottom: 3rem !important;
+	}
+
+	.hero #terminal {
+		perspective: none !important;
+		animation: none !important;
+	}
+
+	.hero #terminal .terminal-container {
+		transform: none !important;
+	}
+
+	.home-container .grid {
+		grid-template-columns: 1fr !important;
+		gap: 2rem !important;
+	}
+
+	.grid .hide-on-mobile {
+		display: none !important;
+	}
+}
+
+@media (max-width: 768px) {
+}
+
+@media (max-width: 480px) {
 }
 
 .hero #terminal {
-	perspective: 500px !important;
+	perspective: 500px;
+	height: 20rem;
 }
 .hero #terminal .terminal-container {
-	transform: rotateX(0deg) rotateY(-7deg) !important;
+	transform: rotateX(0deg) rotateY(-7deg);
+}
+
+.hero h1 {
+	font-size: 3rem;
+	padding: 3.5rem;
 }
 
 a {
@@ -154,24 +206,44 @@ a:hover {
 	border-radius: 0 0.25rem 0.25rem 0;
 }
 
-.home-container .hero {
-	height: 30rem;
-	text-align: center;
-	gap: 4rem;
-}
-
-.hero h1 {
-	font-size: 3rem;
-}
-
 .blog-container {
 	margin-left: auto;
 	margin-right: auto;
 	max-width: 40rem;
+	text-align: justify;
 }
 
 .blog-container .heading {
-	margin-bottom: 5rem;
+	text-align: left;
+}
+
+.blog-container .blog-note {
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+}
+.blog-container .blog-note p {
+	position: relative;
+	font-size: 0.9rem;
+	color: var(--pico-muted-color);
+	margin-left: -2rem;
+	margin-right: -2rem;
+	border: 4px dashed var(--pico-code-border-color);
+	padding: 2rem;
+	border-radius: 1rem;
+}
+
+.blog-container .blog-note p::before {
+	content: '';
+	position: absolute;
+	top: -0.5rem;
+	left: 2rem;
+	width: 1.5rem;
+	height: 1.5rem;
+	background-image: url('/icons/bookmark.svg');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	z-index: 1;
 }
 
 .blog-container pre {
@@ -302,4 +374,8 @@ pre[class*='language-'] {
 	margin: 1rem 0;
 	background-repeat: repeat;
 	background-position: 0 0;
+}
+
+.footer {
+	margin-bottom: 2rem;
 }

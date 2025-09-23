@@ -13,6 +13,7 @@ import { PostsController } from './controllers/posts-controller.js';
 import { AboutPage } from './pages/about.js';
 import { TerminalCommandsApi } from './api/terminal-commands.js';
 import iconsController from './controllers/icons-controller.js';
+import Links from './links.js';
 
 export class App {
 	protected app: Koa;
@@ -32,7 +33,7 @@ export class App {
 		this.app.use(bearerToken());
 		this.app.use(serve('./public'));
 
-		const renderer = new Renderer();
+		const renderer = new Renderer({ commonLinks: Links });
 		const postsController = new PostsController();
 		const icons = iconsController.getIcons();
 

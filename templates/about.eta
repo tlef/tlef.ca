@@ -1,7 +1,7 @@
 <% layout('layouts/base') %>
 
 <main class="about">
-  <h1>About</h1>
+  <h1>About Tim</h1>
 	<div class="grid about-head">
 		<div>
 		<p>Howdy, glad you're here. My name is Tim and I'm a software developer living on an island off the westcoast of Canada.</p>

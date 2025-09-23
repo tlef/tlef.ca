@@ -7,13 +7,15 @@ export interface IRenderer {
 
 export class Renderer implements IRenderer {
 	protected eta: Eta;
+	protected commonData: object;
 
-	constructor() {
+	constructor(commonData?: object) {
 		const __dirname = path.resolve(process.cwd());
 		this.eta = new Eta({ views: path.join(__dirname, 'templates') });
+		this.commonData = commonData || {};
 	}
 
 	render(fileKey: string, data: object): string {
-		return this.eta.render(fileKey + '.eta', data);
+		return this.eta.render(fileKey + '.eta', { ...this.commonData, ...data });
 	}
 }

@@ -15,6 +15,8 @@ class IconsController {
 			'utf8',
 		);
 		this.icons['search'] = fs.readFileSync('public/icons/search.svg', 'utf8');
+		this.icons['rss'] = fs.readFileSync('public/icons/rss.svg', 'utf8');
+		this.icons['feather'] = fs.readFileSync('public/icons/feather.svg', 'utf8');
 	}
 
 	public getIcons(): Record<string, string> {

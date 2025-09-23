@@ -15,9 +15,11 @@ export interface IPost {
 	tags: string[];
 	summary: string;
 	content: string;
+	note: string;
 }
 
 const CATEGORIES = {
+	'essential-developer': 'Essential Developer',
 	js: 'JavaScript',
 	slack: 'Slack',
 };
@@ -63,6 +65,7 @@ export class PostsController {
 				tags: parsed.data.tags ? parsed.data.tags.split(',') : [],
 				summary: parsed.data.summary,
 				content: parsed.content,
+				note: parsed.data.note || '',
 			};
 
 			for (const tag of this.posts[key].tags) {

@@ -40,6 +40,7 @@ export class PostPage {
 		});
 
 		ctx.body = this.renderer.render('posts', {
+			title: 'Posts',
 			posts,
 			query: search,
 			icons: this.icons,
@@ -64,7 +65,11 @@ export class PostPage {
 			ctx.body = post;
 			ctx.type = 'application/json';
 		} else {
-			ctx.body = this.renderer.render('post', { post, icons: this.icons });
+			ctx.body = this.renderer.render('post', {
+				title: post.title,
+				post,
+				icons: this.icons,
+			});
 		}
 	}
 }

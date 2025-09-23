@@ -39,7 +39,7 @@
 					<a href="/posts">Read more...</a>
 				</div>
 			</div>
-			<div class="sidebar">
+			<div class="sidebar hide-on-mobile">
 				<form action="/posts" method="get">
 					<div class="search-input-group">
 						<input type="text" name="search" placeholder="Search posts..." required>

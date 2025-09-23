@@ -16,6 +16,8 @@ export class AboutPage {
 	}
 
 	private async getAbout(ctx: Context): Promise<void> {
-		ctx.body = this.renderer.render('about', { icons: this.icons });
+		ctx.body = this.renderer.render('about', {
+			icons: this.icons,
+		});
 	}
 }

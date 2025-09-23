@@ -1,6 +1,7 @@
 #terminal {
 	width: auto;
-	height: 20rem;
+	/* height: 20rem; */
+	height: 100%;
 	max-width: 800px;
 	animation: float 7s ease-in-out infinite;
 }
