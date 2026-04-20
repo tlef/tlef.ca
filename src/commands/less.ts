@@ -3,12 +3,12 @@ import {
 	type ICommand,
 	type ICommandResponse,
 } from './_types.js';
-import { v4 as uuidv4 } from 'uuid';
+import { aboutMe } from '../data/aboutme.json.js';
 
-const NAME = 'guid';
-const DESCRIPTION = 'Generate a GUID (Globally Unique Identifier)';
-const USAGE = 'guid [N]';
-const HIDDEN = false;
+const NAME = 'less';
+const DESCRIPTION = 'Display file contents';
+const USAGE = 'less <filename>';
+const HIDDEN = true;
 
 export default class implements ICommand {
 	help(_args: string[]): string {
@@ -25,33 +25,27 @@ export default class implements ICommand {
 	}
 
 	execute(
-		args: string[],
+		_args: string[],
 		optionArgs: Record<string, string>,
 	): ICommandResponse {
 		if (optionArgs.help || optionArgs.h) {
 			return { text: this.help([]) };
 		}
-
-		let count = 1;
-		if (args[0]) {
-			if (isNaN(parseInt(args[0]))) {
+		if (_args.length > 0) {
+			const filename = _args[0];
+			if (filename === 'aboutme.json') {
 				return {
-					text: usageText,
+					text: aboutMe,
 				};
 			}
-			count = parseInt(args[0]);
-		}
 
-		try {
-			const guids = Array.from({ length: count }, () => uuidv4());
 			return {
-				text: guids.join('\n'),
-			};
-		} catch (error) {
-			return {
-				text: 'invalid JWT token.',
+				text: `unknown file: ${filename}`,
 			};
 		}
+		return {
+			text: `Missing filename\n` + usageText,
+		};
 	}
 }
 
@@ -60,15 +54,11 @@ Usage: ${USAGE}
 
 ${DESCRIPTION}
 
-Positional arguments:	
-	N							Number of GUIDs to generate (default: 1)
-
 Options:
 	-h, --help		Show this help message and exit
 
 Examples:
-	guid					Generate a single GUID
-	guid 10				Generate 10 GUIDs
+	less example.txt		Display the contents of example.txt
 `.trim();
 
 const usageText = `

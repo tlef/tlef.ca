@@ -22,22 +22,19 @@
 		<h1>Latest Posts</h1>
 		<div class="grid">
 			<div>
-			<% it.posts.forEach(function(post) { %>
+				<% if (it.posts && it.posts.length > 0) { %>
+					<% it.posts.forEach(function(post) { %>
 					<article>
 						<h4><a href="/posts/<%= post.slug %>"><%= post.title %></a></h4>
 						<p><%= post.summary %></p>
-						<% /* <% if (Array.isArray(post.tags)) { %>
-							<div class="tags">
-								<% post.tags.forEach(function(tag) { %>
-									<a href="/posts?tag=<%= tag %>"><%= tag %></a>
-								<% }) %>
-							</div>
-						<% } %> */ %>
 					</article>
-			<% }) %>
-				<div>
-					<a href="/posts">Read more...</a>
-				</div>
+				<% }) %>
+					<div>
+						<a href="/posts?offset=<%= it.posts.length %>">Read more...</a>
+					</div>
+				<% } else { %>
+						<p>No posts found.</p>
+				<% } %>
 			</div>
 			<div class="sidebar hide-on-mobile">
 				<form action="/posts" method="get">

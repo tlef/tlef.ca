@@ -20,7 +20,11 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: Figtree, var(--pico-font-family);
+	/* font-family: Figtree, var(--pico-font-family); */
+	font-family: 'Source Serif 4', serif;
+	font-optical-sizing: auto;
+	font-weight: 700;
+	font-style: normal;
 }
 
 header nav h1 {
@@ -57,6 +61,9 @@ header nav .spacer {
 }
 
 #theme-toggle {
+	color: var(--text-color);
+	/* width: 1rem; */
+	margin-right: 0px;
 	padding: 0px;
 }
 
@@ -116,7 +123,7 @@ header nav .spacer {
 	height: 20rem;
 }
 .hero #terminal .terminal-container {
-	transform: rotateX(0deg) rotateY(-7deg);
+	transform: rotateX(0deg) rotateY(-7deg) translateX(-0.84rem);
 }
 
 .hero h1 {
@@ -209,12 +216,34 @@ a:hover {
 .blog-container {
 	margin-left: auto;
 	margin-right: auto;
-	max-width: 40rem;
-	text-align: justify;
+	max-width: 35rem;
+	/* text-align: justify; */
+	line-height: 28px;
 }
 
 .blog-container .heading {
 	text-align: left;
+	font-size: 0.75rem;
+	color: var(--pico-muted-color);
+	margin-bottom: 3rem;
+}
+
+.blog-container h1,
+.blog-container h2,
+.blog-container h3,
+.blog-container h4 {
+	font-family: 'Source Serif 4', serif;
+	font-optical-sizing: auto;
+	font-style: normal;
+	font-weight: 600;
+}
+
+.blog-container p,
+.blog-container li {
+	font-family: 'Source Serif 4', serif;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
 }
 
 .blog-container .blog-note {

@@ -12,6 +12,36 @@
 			}
 		},
 		{
+			"label": "Build Browser TypeScript",
+			"type": "shell",
+			"command": "./node_modules/.bin/tsc -p tsconfig.browser.json",
+			"problemMatcher": ["$tsc"],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"label": "Build All",
+			"dependsOrder": "parallel",
+			"dependsOn": ["Build Typescript", "Build Browser TypeScript"],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"label": "Watch Browser TypeScript",
+			"type": "shell",
+			"command": "./node_modules/.bin/tsc -p tsconfig.browser.json --watch",
+			"problemMatcher": ["$tsc-watch"],
+			"isBackground": true,
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
 			"label": "Lint Typescript",
 			"type": "shell",
 			"command": "./node_modules/.bin/eslint 'src/**/*.{ts,tsx}'",

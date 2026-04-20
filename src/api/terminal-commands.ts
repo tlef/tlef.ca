@@ -1,10 +1,11 @@
 import { IApiEndpoint } from './_types.js';
 import fs from 'fs';
 import path from 'path';
-import { COMMAND_ACTIONS, ICommand } from '../commands/_types.js';
+import { COMMAND_ACTIONS, ICommand, ICommandMeta } from '../commands/_types.js';
 
 export class TerminalCommandsApi {
 	protected commands: Record<string, ICommand> = {};
+	protected commandsMeta: Record<string, ICommandMeta> = {};
 
 	async init() {
 		const commandsDir = path.resolve(
@@ -27,6 +28,7 @@ export class TerminalCommandsApi {
 			const CommandClass = (await import(path.join(commandsDir, file))).default;
 
 			this.commands[command] = new CommandClass();
+			this.commandsMeta[command] = this.commands[command].meta();
 		}
 	}
 
@@ -82,6 +84,7 @@ export class TerminalCommandsApi {
 		let cmdText: string | undefined;
 		let cmdActions: COMMAND_ACTIONS[] | undefined;
 		let cmdInput: string | undefined;
+		let cmdError: string | undefined;
 
 		if (this.commands[commandName]) {
 			const commandInstance = this.commands[commandName];
@@ -93,6 +96,23 @@ export class TerminalCommandsApi {
 			cmdInput = cmdResponse.input;
 		} else {
 			switch (commandName) {
+				case 'cd':
+				case 'dir':
+				case 'pwd':
+				case 'mkdir':
+				case 'rmdir':
+				case 'rm':
+				case 'mv':
+				case 'cp':
+				case 'find':
+				case 'locate':
+				case 'whereis':
+				case 'which':
+				case 'pushd':
+				case 'popd':
+				case 'tree':
+					cmdError = 'sorry, not a real terminal';
+					break;
 				case 'help':
 					cmdText = this.runHelp(commandArgs);
 					break;
@@ -110,6 +130,15 @@ export class TerminalCommandsApi {
 					}
 					break;
 			}
+		}
+
+		if (cmdError) {
+			return {
+				body: {
+					error: cmdError,
+				},
+				status: 200,
+			};
 		}
 
 		if (!cmdText && !cmdActions) {
@@ -142,7 +171,16 @@ export class TerminalCommandsApi {
 			return `Command not found: ${commandName}`;
 		}
 		const helpText =
-			'Available commands: ' + Object.keys(this.commands).join(', ');
+			'Available commands:\n' +
+			Object.keys(this.commands)
+				.filter((command) => !this.commandsMeta[command]?.hidden)
+				.map((command) => {
+					const meta = this.commandsMeta[command];
+					return meta?.description
+						? `${meta?.name || command} - ${meta.description}`
+						: meta?.name || command;
+				})
+				.join('\n');
 		return helpText;
 	}
 }

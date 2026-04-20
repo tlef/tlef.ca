@@ -1,0 +1,15 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"target": "es2020",
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"lib": ["dom", "es2020"],
+		"outDir": "./public/js",
+		"rootDir": "./src/client",
+		"declaration": false,
+		"noEmit": false
+	},
+	"include": ["src/client/**/*"],
+	"exclude": ["src/client/**/*.test.ts", "src/client/**/*.spec.ts"]
+}

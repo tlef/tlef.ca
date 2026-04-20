@@ -1,18 +1,39 @@
-import { type ICommand, type ICommandResponse } from './_types.js';
+import {
+	ICommandMeta,
+	type ICommand,
+	type ICommandResponse,
+} from './_types.js';
 import { jwtDecode } from 'jwt-decode';
 
+const NAME = 'jwt';
+const DESCRIPTION = 'Decode a JSON Web Token (JWT)';
+const USAGE = 'jwt [token]';
+const HIDDEN = false;
 export default class implements ICommand {
 	help(_args: string[]): string {
-		return 'jwt <token> - Decode a JWT token.';
+		return helpText;
+	}
+
+	meta(): ICommandMeta {
+		return {
+			name: NAME,
+			description: DESCRIPTION,
+			usage: USAGE,
+			hidden: HIDDEN,
+		};
 	}
 
 	execute(
 		args: string[],
-		_optionArgs: Record<string, string>,
+		optionArgs: Record<string, string>,
 	): ICommandResponse {
+		if (optionArgs.help || optionArgs.h) {
+			return { text: this.help([]) };
+		}
+
 		if (args.length === 0) {
 			return {
-				text: 'usage: jwt <token>',
+				text: `Missing token\n` + usageText,
 			};
 		}
 
@@ -35,3 +56,16 @@ ${JSON.stringify(decodedToken, null, 2)}
 		}
 	}
 }
+
+const helpText = `
+Usage: ${USAGE}
+
+${DESCRIPTION}
+
+Positional arguments:
+	-h, --help		Show this help message and exit
+`.trim();
+
+const usageText = `
+usage: ${USAGE}
+`.trim();

@@ -1,8 +1,9 @@
 ---
-title: Countdown to Launch  
-date: 2019-03-13  
-author: tlef  
-tags: slack, api, dev  
+title: Countdown to Launch
+date: 2019-03-13
+author: tlef
+tags: slack, api, dev
+summary: A behind-the-scenes look at building Slack's Scheduled Messages API, enabling precise, large-scale message delivery for calendar integrations and other use cases.
 ---
 
 This morning, the [Slack Developer Blog](https://medium.com/slack-developer-blog/countdown-to-launch-4498346abd90) published my blog post about the Scheduled Messages API.

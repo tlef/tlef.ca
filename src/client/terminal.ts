@@ -5,26 +5,9 @@ interface CommandResponse {
 	input?: string;
 }
 
-const terminalPrompt = ':$';
-// const initialText = `[b]Welcome to my interactive terminal![/b]
-// Type [color=cyan]help[/color] to see a list of available commands.
-// Type [color=cyan]clear[/color] to clear the terminal.
-// Type [color=cyan]fullscreen[/color] to toggle fullscreen mode.
-// `;
-
-const initialText = `:$ less aboutme.json\n{
-[tab][color=red]"name"[/color]: [color=green]"Tim Lefler"[/color],
-[tab][color=red]"status"[/color]: [color=green]"working [url=https://www.linkedin.com/in/tlef/][open to connect][/url]"[/color],
-[tab][color=red]"location"[/color]: [color=green]"Western Canada (Pacific Time)"[/color],
-[tab][color=red]"pronouns"[/color]: [color=green]"he/him"[/color],
-[tab][color=red]"preferred_contact_method"[/color]: [color=green]"socials"[/color],
-[tab][color=red]"socials"[/color]: {
-[tab][tab][color=green]"web"[/color]: "[url=https://tlef.ca]tlef.ca[/url]",
-[tab][tab][color=green]"bluesky"[/color]: "[url=https://bsky.app/@tlef.ca]@tlef.ca[/url]",
-[tab][tab][color=green]"github"[/color]: "[url=https://github.com/tlef]tlef[/url]",
-[tab][tab][color=green]"linkedin"[/color]: "[url=https://www.linkedin.com/in/tlef/]tlef[/url]"
-[tab]}
-}`;
+const INITIAL_COMMAND = 'less aboutme.json';
+const INITIAL_COMMAND_DELAY_MS = 500;
+const PROMPT = ':$';
 
 type OutputType = 'output' | 'error' | 'success' | 'response' | 'input';
 
@@ -72,11 +55,18 @@ class Terminal {
 		this.windowToggle = document.getElementById('overlayToggle')!;
 
 		this.initEventListeners();
-		this.writeIntroLine();
 		this.appendInputLine();
-
-		// Initially hide the cursor
 		this.input?.blur();
+
+		setTimeout(async () => {
+			try {
+				await this.executeCommand(INITIAL_COMMAND);
+				this.input?.blur();
+			} catch (error) {
+				console.error('Error executing initial command:', error);
+				this.appendInputLine();
+			}
+		}, INITIAL_COMMAND_DELAY_MS);
 	}
 
 	private initEventListeners(): void {
@@ -98,27 +88,6 @@ class Terminal {
 				this.toggleOverlay(false);
 			}
 		});
-	}
-
-	private writeIntroLine(): void {
-		const initialDiv = document.createElement('div');
-		initialDiv.classList.add('typing-text');
-		initialDiv.id = 'typingText';
-		this.content.appendChild(initialDiv);
-		// 		initialDiv.innerHTML = this.bbcodeToHtml(
-		// 			`${terminalPrompt} less aboutme.json\n{
-		// [tab][color=red]"name"[/color]: [color=green]"Tim Lefler"[/color],
-		// [tab][color=red]"role"[/color]: [color=green]"Software Developer"[/color],
-		// [tab][color=red]"years_experience"[/color]: [color=green]25[/color],
-		// [tab][color=red]"status"[/color]: [color=green]"working"[/color],
-		// [tab][color=red]"specializing_in"[/color]: [
-		// [tab][tab]"[color=magenta]web development"[/color],
-		// [tab][tab]"[color=magenta]platform design"[/color],
-		// [tab][tab]"[color=magenta]api development"[/color]
-		// [tab]]
-		// }\n`,
-		// 		);
-		initialDiv.innerHTML = this.bbcodeToHtml(initialText);
 	}
 
 	private handleInput(e: KeyboardEvent): void {
@@ -157,7 +126,6 @@ class Terminal {
 
 	private async executeCommand(commandStr: string): Promise<void> {
 		this.input.style.display = 'none';
-
 		this.commandHistory.unshift(commandStr);
 		this.historyIndex = -1;
 
@@ -281,7 +249,7 @@ class Terminal {
 		const inputLine = this.content.querySelector('.input-line');
 		const commandLine = document.createElement('div');
 		commandLine.className = 'command-line';
-		commandLine.innerHTML = `<span class="terminal-prompt">${terminalPrompt}</span><span class="command">${this.escapeHtml(command)}</span>`;
+		commandLine.innerHTML = `<span class="terminal-prompt">${PROMPT}</span><span class="command">${this.escapeHtml(command)}</span>`;
 		if (inputLine?.parentNode) {
 			inputLine.parentNode.insertBefore(commandLine, inputLine);
 		}
@@ -312,7 +280,7 @@ class Terminal {
 		const inputLine = document.createElement('div');
 		inputLine.className = 'terminal-line input-line';
 		inputLine.innerHTML = `
-			<span class="terminal-prompt">${terminalPrompt}</span>
+			<span class="terminal-prompt">${PROMPT}</span>
 			<div class="input-wrapper">
 				<input type="text" class="terminal-input" id="terminalInput" placeholder="" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off" data-form-type="other">
 				<div class="cursor" id="cursor"></div>

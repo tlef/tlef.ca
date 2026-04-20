@@ -7,7 +7,13 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"generate-posts": "node scripts/generate-posts.js"
+		"generate-posts": "node scripts/generate-posts.js",
+		"build": "npm run build:server && npm run build:client",
+		"build:server": "tsc -p tsconfig.json",
+		"build:client": "tsc -p tsconfig.browser.json",
+		"dev": "npm run build && node out/index.js",
+		"watch:server": "tsc -p tsconfig.json --watch",
+		"watch:client": "tsc -p tsconfig.browser.json --watch"
 	},
 	"author": "",
 	"license": "ISC",

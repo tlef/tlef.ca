@@ -5,16 +5,24 @@
     <main>
 			<div class="heading">
 				<h1><%= it.post.title || it.post.slug %></h1>
-				<% if (it.post.date) { %>
-					<p>
-						<time datetime="<%= it.post.date.toISOString() %>">
-							<%= new Date(it.post.date).toLocaleDateString(it.locale, { 
-								year: 'numeric', 
-								month: 'short', 
-								day: 'numeric' 
-							}) %>
-						</time>
-					</p>
+				<hr />
+				<% if (it.post.author || it.post.date) { %>
+					<div style="display: flex; justify-content: space-between; align-items: baseline;">
+						<% if (it.post.author) { %>
+							<div><%= it.post.author %> • <%= it.post.minsToRead %> min<% if (it.post.minsToRead !== 1) { %>s<% } %></div> 
+						<% } %>
+						<% if (it.post.date) { %>
+							<div>
+								<time datetime="<%= it.post.date.toISOString() %>">
+									<%= new Date(it.post.date).toLocaleDateString(it.locale, { 
+										year: 'numeric', 
+										month: 'short', 
+										day: 'numeric' 
+									}) %>
+								</time>
+							</div>
+						<% } %>
+					</div>
 				<% } %>
 				<% /* <% if (Array.isArray(it.post.tags) && it.post.tags.length) { %>
 					<div class="tags">

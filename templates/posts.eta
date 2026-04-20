@@ -1,16 +1,21 @@
 <% layout('layouts/base') %>
 
 <section>
-	<div class="blog-container">
+	<div>
 		<form action="/posts" method="get">
-			<div class="search-input-group">
+			<div class="search-input-group" style="max-width: 40rem; margin-left: auto; margin-right: auto;margin-bottom: 2rem;">
 				<input type="text" name="search" placeholder="Search posts..." required value="<%= it.query || '' %>">
 				<button type="submit">
 					<%~ it.icons['search'] || 'Search' %>
 				</button>
 			</div>
 		</form>
-		<main>
+		<% if (it.query) { %>
+		<main style="max-width: 40rem; margin-left: auto; margin-right: auto;margin-bottom: 2rem;">
+		<% }else{%>
+		<main class="grid" style="grid-template-columns: 2fr 1fr;">
+		<% } %>
+			<div>
 		<% if (!it.posts || it.posts.length === 0) { %>
 			<% if (it.query) { %>
 				<p>No results for "<%= it.query %>".</p>
@@ -32,7 +37,6 @@
 				</article>	
 			<% }) %>
 		<% } %>
-		</main>
 		<% if (it.pagination && (it.pagination.totalPages > 1)) { %>
 			<nav class="pagination" aria-label="Posts pagination">
 				<% if (it.pagination.hasPrev) { %>
@@ -48,5 +52,28 @@
 				<% } %>
 			</nav>
 		<% } %>
+		</div>
+
+		<% if (!it.query) { %>
+			<div>				
+				<h3>Categories</h3>
+				<div class="category-list">
+					<ul>
+						<% it.categories.forEach(function(category) { %>
+							<li><a href="/posts?tag=<%= encodeURIComponent(category.tag) %>"><%= category.title %></a></li>
+						<% }) %>
+					</ul>
+				</div>
+				<h3>Popular Posts</h3>
+				<div class="category-list">
+					<ul>
+						<% it.popularPosts.forEach(function(post) { %>
+							<li><a href="/posts/<%= post.slug %>"><%= post.title %></a></li>
+						<% }) %>
+					</ul>
+				</div>
+			</div>
+		<% } %>
+		</main>
 	</div>
 </section>

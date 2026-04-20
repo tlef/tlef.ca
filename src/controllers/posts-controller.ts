@@ -16,6 +16,7 @@ export interface IPost {
 	summary: string;
 	content: string;
 	note: string;
+	minsToRead?: number;
 }
 
 const CATEGORIES = {
@@ -57,6 +58,8 @@ export class PostsController {
 			const parsed = parseMarkdown(content);
 			const key = path.basename(file, '.md');
 
+			const minsToRead = Math.ceil(parsed.content.split(' ').length / 200);
+
 			this.posts[key] = {
 				title: parsed.data.title,
 				slug: key,
@@ -66,6 +69,7 @@ export class PostsController {
 				summary: parsed.data.summary,
 				content: parsed.content,
 				note: parsed.data.note || '',
+				minsToRead,
 			};
 
 			for (const tag of this.posts[key].tags) {
@@ -103,7 +107,10 @@ export class PostsController {
 		offset?: number;
 		search?: string;
 		tags?: string[];
-	}): any[] {
+	}): {
+		posts: any[];
+		pagination: { total: number; offset: number; limit: number };
+	} {
 		let keys = [...this.orderedKeys];
 
 		if (options.search) {
@@ -131,17 +138,24 @@ export class PostsController {
 		let limit = options.limit ?? DEFAULT_POSTS_PER_QUERY;
 		if (limit > MAX_POSTS_PER_QUERY) limit = MAX_POSTS_PER_QUERY;
 
-		return keys.slice(offset, offset + limit).map((key) => {
-			const post = this.posts[key];
-			return {
-				title: post.title,
-				slug: post.slug,
-				date: post.date,
-				author: post.author,
-				tags: post.tags,
-				summary: post.summary,
-			};
-		});
+		return {
+			posts: keys.slice(offset, offset + limit).map((key) => {
+				const post = this.posts[key];
+				return {
+					title: post.title,
+					slug: post.slug,
+					date: post.date,
+					author: post.author,
+					tags: post.tags,
+					summary: post.summary,
+				};
+			}),
+			pagination: {
+				total: keys.length,
+				offset,
+				limit,
+			},
+		};
 	}
 
 	getPost(key: string): any {

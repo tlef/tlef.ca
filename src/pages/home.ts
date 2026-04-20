@@ -23,7 +23,7 @@ export class HomePage {
 	}
 
 	private async getHome(ctx: Context): Promise<void> {
-		const posts = this.postsController.getPosts({ limit: 5 });
+		const { posts } = this.postsController.getPosts({ limit: 5 });
 		const categories = this.postsController.getCategories();
 		const popularPosts = this.postsController.getPopularPosts();
 
